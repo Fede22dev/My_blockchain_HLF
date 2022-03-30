@@ -1,0 +1,56 @@
+ENROLL ADMIN (RETURN AUTHORIZATION TOKEN)
+curl --request POST --url http://localhost:8802/user/enroll --header 'Authorization: Bearer' --data '{"id": "admin", "secret": "adminpw"}'
+
+
+REGISTER (RETURN STATUS MESSAGE)
+curl --request POST \
+  --url http://localhost:8801/user/register \
+  --header 'Authorization: Bearer <--------authorization-token------->'
+  --data '{"id": "user", "secret": "user1"}'
+
+REGISTER WITH AUTH TOKEN
+curl --request POST --url http://localhost:8801/user/register --header 'Authorization: Bearer 45e8e560-aabb-11ec-ae11-53c2df9ee45e-admin' --data '{"id": "user2", "secret": "user1"}'
+
+
+LIST OF IDENTITIES (OPTIONAL)
+curl --request GET \
+  --url http://localhost:8801/user/identities \
+  --header 'Authorization: Bearer <--------authorization-token------->'
+
+LIST OF IDENTITIES WITH AUTH TOKEN
+curl --request GET --url http://localhost:8801/user/identities --header 'Authorization: Bearer 45e8e560-aabb-11ec-ae11-53c2df9ee45e-admin'
+
+
+DISCOVER CHANNEL (RETURN JSON with discovery results, containing MSPs, orderers and peers by organizations)
+curl --request POST \
+  --url http://localhost:8801/discover/channel1 \
+  --header 'Authorization: Bearer <authorization-token>'
+
+DISCOVER CHANNEL WITH AUTH TOKEN
+curl --request POST --url http://localhost:8801/discover/channel1 --header 'Authorization: Bearer 45e8e560-aabb-11ec-ae11-53c2df9ee45e-admin'
+
+
+INVOKE/QUERY CHAINCODE
+curl --request POST \
+  --url http://localhost:8801/invoke/channel1/chaincode1 \
+  --header 'Authorization: Bearer <authorization-token>'
+  --data "{
+    \"method\": \"<ContractClass:method>\",
+    \"args\": [
+      \"arg1\",
+      \"arg2\",
+      ...
+    ]
+  }"
+
+INVOKE/QUERY CHAINCODE WITH AUTH CODE (invoke write / query read ledger)
+curl --request POST --url http://localhost:8802/invoke/home1/chaincode1 --header 'Authorization: Bearer 09695820-ad15-11ec-a7b2-1dbfe92f4e0b-admin' --data "{ \"method\": \"HouseSupervisorContract:payRent\", \"args\": [ \"tenant\", \"landlord\", \"450\" ] }"
+curl --request POST --url http://localhost:8802/invoke/home1/chaincode1 --header 'Authorization: Bearer 09695820-ad15-11ec-a7b2-1dbfe92f4e0b-admin' --data "{ \"method\": \"HouseSupervisorContract:payDeposit\", \"args\": [ \"tenant\", \"landlord\", \"100\" ] }"
+curl --request POST --url http://localhost:8802/invoke/home1/chaincode1 --header 'Authorization: Bearer 09695820-ad15-11ec-a7b2-1dbfe92f4e0b-admin' --data "{ \"method\": \"HouseSupervisorContract:payBills\", \"args\": [ \"tenant\", \"landlord\", \"50\" ] }"
+curl --request POST --url http://localhost:8802/invoke/home1/chaincode1 --header 'Authorization: Bearer 09695820-ad15-11ec-a7b2-1dbfe92f4e0b-admin' --data "{ \"method\": \"HouseSupervisorContract:payCondominiumFees\", \"args\": [ \"tenant\", \"landlord\", \"600\" ] }"
+
+curl --request POST --url http://localhost:8802/query/home1/chaincode1 --header 'Authorization: Bearer 09695820-ad15-11ec-a7b2-1dbfe92f4e0b-admin' --data "{ \"method\": \"HouseSupervisorContract:readAllPaymentType\", \"args\": [ \"bills\", \"3\", \"2022\", \"3\", \"2022\" ] }"
+
+
+BLOCKCHAIN EXPLORER
+http://localhost:7010/

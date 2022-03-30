@@ -1,0 +1,8 @@
+PeerOrgs:
+  - Name: Landlord1
+    Domain: landlord1.project.it
+    Specs:
+    Template:
+      Count: 1
+    Users:
+      Count: 1

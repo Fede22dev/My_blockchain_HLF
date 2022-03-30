@@ -1,0 +1,62 @@
+{
+  "name": "fablo-test-network-guest1",
+  "description": "Connection profile for Guest1 in Fablo network",
+  "version": "1.0.0",
+  "client": {
+    "organization": "Guest1"
+  },
+  "organizations": {
+    "Guest1": {
+      "mspid": "Guest1MSP",
+      "peers": [
+        "peer0.landlord1.project.it",
+        "peer0.tenant1.project.it",
+        "peer0.guest1.project.it"
+      ],
+      "certificateAuthorities": [
+        "ca.guest1.project.it"
+      ]
+    }
+  },
+  "peers": {
+    "peer0.landlord1.project.it": {
+      "url": "grpcs://localhost:7041",
+      "tlsCACerts": {
+        "path": "/home/maserati/IdeaProjects/My_blockchain_HLF/network/fablo-target/fabric-config/crypto-config/peerOrganizations/landlord1.project.it/peers/peer0.landlord1.project.it/tls/ca.crt"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.landlord1.project.it"
+      }
+    },
+    "peer0.tenant1.project.it": {
+      "url": "grpcs://localhost:7061",
+      "tlsCACerts": {
+        "path": "/home/maserati/IdeaProjects/My_blockchain_HLF/network/fablo-target/fabric-config/crypto-config/peerOrganizations/tenant1.project.it/peers/peer0.tenant1.project.it/tls/ca.crt"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.tenant1.project.it"
+      }
+    },
+    "peer0.guest1.project.it": {
+      "url": "grpcs://localhost:7081",
+      "tlsCACerts": {
+        "path": "/home/maserati/IdeaProjects/My_blockchain_HLF/network/fablo-target/fabric-config/crypto-config/peerOrganizations/guest1.project.it/peers/peer0.guest1.project.it/tls/ca.crt"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.guest1.project.it"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.guest1.project.it": {
+      "url": "http://localhost:7080",
+      "caName": "ca.guest1.project.it",
+      "tlsCACerts": {
+        "path": "/home/maserati/IdeaProjects/My_blockchain_HLF/network/fablo-target/fabric-config/crypto-config/peerOrganizations/guest1.project.it/ca/ca.guest1.project.it-cert.pem"
+      },
+      "httpOptions": {
+        "verify": false
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# Project exclude paths
+/network/console-test/.gradle/
+/network/console-test/build/
+/network/console-test/build/classes/java/main/

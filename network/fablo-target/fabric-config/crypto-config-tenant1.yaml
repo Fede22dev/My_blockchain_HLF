@@ -1,0 +1,8 @@
+PeerOrgs:
+  - Name: Tenant1
+    Domain: tenant1.project.it
+    Specs:
+    Template:
+      Count: 1
+    Users:
+      Count: 1

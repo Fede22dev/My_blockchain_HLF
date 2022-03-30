@@ -1,0 +1,103 @@
+{
+  "$schema": "https://github.com/softwaremill/fablo/releases/download/1.0.0/schema.json",
+  "global": {
+    "fabricVersion": "2.4.1",
+    "tls": true,
+    "tools": {
+      "explorer": true
+    }
+  },
+  "orgs": [
+    {
+      "organization": {
+        "name": "Orderer",
+        "domain": "orderer.project.it"
+      },
+      "orderers": [
+        {
+          "groupName": "group1",
+          "type": "raft",
+          "instances": 2
+        }
+      ],
+      "tools": {}
+    },
+    {
+      "organization": {
+        "name": "Landlord1",
+        "domain": "landlord1.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
+    },
+    {
+      "organization": {
+        "name": "Tenant1",
+        "domain": "tenant1.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
+    },
+    {
+      "organization": {
+        "name": "Guest1",
+        "domain": "guest1.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
+    }
+  ],
+  "channels": [
+    {
+      "name": "home1",
+      "orgs": [
+        {
+          "name": "Landlord1",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Tenant1",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Guest1",
+          "peers": [
+            "peer0"
+          ]
+        }
+      ]
+    }
+  ],
+  "chaincodes": [
+    {
+      "name": "chaincode1",
+      "version": "0.0.1",
+      "lang": "java",
+      "channel": "home1",
+      "directory": "../house-supervisor-chaincode",
+      "endorsement": "OR('Landlord1MSP.member', 'Tenant1MSP.member', 'Guest1MSP.member')"
+    }
+  ]
+}

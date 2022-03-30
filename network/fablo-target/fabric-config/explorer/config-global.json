@@ -1,0 +1,17 @@
+{
+  "network-configs": {
+    "network-landlord1": {
+      "name": "Network of Landlord1",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-landlord1.json"
+    },
+    "network-tenant1": {
+      "name": "Network of Tenant1",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-tenant1.json"
+    },
+    "network-guest1": {
+      "name": "Network of Guest1",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-guest1.json"
+    }
+  },
+  "license": "Apache-2.0"
+}
