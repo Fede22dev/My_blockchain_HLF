@@ -1,8 +1,4 @@
-/*
- * SPDX-License-Identifier: Apache2.0
- */
-
-package org.project;
+package org.project.supervisor;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;

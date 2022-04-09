@@ -1,7 +1,4 @@
-/*
- * SPDX-License-Identifier: Apache2.0
- */
-package org.project;
+package org.project.supervisor;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -53,13 +50,12 @@ public class HouseSupervisorContract implements ContractInterface {
             byte[] buffer = stub.getState(key);
             if (!(buffer != null && buffer.length > 0)) {
                 if (rent == 450) {
-                    long time = System.currentTimeMillis();
 
                     HouseSupervisor asset = new HouseSupervisor();
                     asset.setPaymentFrom(paymentFrom);
                     asset.setPaymentTo(paymentTo);
                     asset.setRent(rent);
-                    asset.setTimestamp(new Timestamp(time).toString());
+                    asset.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
                     stub.putState(key, asset.toJSONString().getBytes(UTF_8));
 
@@ -96,13 +92,12 @@ public class HouseSupervisorContract implements ContractInterface {
             byte[] buffer = stub.getState(key);
             if (!(buffer != null && buffer.length > 0)) {
                 if (deposit == 100) {
-                    long time = System.currentTimeMillis();
 
                     HouseSupervisor asset = new HouseSupervisor();
                     asset.setPaymentFrom(paymentFrom);
                     asset.setPaymentTo(paymentTo);
                     asset.setDeposit(deposit);
-                    asset.setTimestamp(new Timestamp(time).toString());
+                    asset.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
                     stub.putState(key, asset.toJSONString().getBytes(UTF_8));
 
@@ -139,13 +134,12 @@ public class HouseSupervisorContract implements ContractInterface {
             byte[] buffer = stub.getState(key);
             if (!(buffer != null && buffer.length > 0)) {
                 if (bills == 50) {
-                    long time = System.currentTimeMillis();
 
                     HouseSupervisor asset = new HouseSupervisor();
                     asset.setPaymentFrom(paymentFrom);
                     asset.setPaymentTo(paymentTo);
                     asset.setBills(bills);
-                    asset.setTimestamp(new Timestamp(time).toString());
+                    asset.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
                     stub.putState(key, asset.toJSONString().getBytes(UTF_8));
 
@@ -182,13 +176,12 @@ public class HouseSupervisorContract implements ContractInterface {
             byte[] buffer = stub.getState(key);
             if (!(buffer != null && buffer.length > 0)) {
                 if (condominiumFees == 600) {
-                    long time = System.currentTimeMillis();
 
                     HouseSupervisor asset = new HouseSupervisor();
                     asset.setPaymentFrom(paymentFrom);
                     asset.setPaymentTo(paymentTo);
                     asset.setCondominiumFees(condominiumFees);
-                    asset.setTimestamp(new Timestamp(time).toString());
+                    asset.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
                     stub.putState(key, asset.toJSONString().getBytes(UTF_8));
 
@@ -247,28 +240,17 @@ public class HouseSupervisorContract implements ContractInterface {
 
     @Transaction()
     public String invokeBenchmark(@NotNull Context ctx, int i) {
-        //if (Objects.equals(ctx.getClientIdentity().getMSPID(), "Tenant1MSP")) {
         String key = "BENCH" + i;
-        ChaincodeStub stub = ctx.getStub();
-        //byte[] buffer = stub.getState(key);
-        //if (!(buffer != null && buffer.length > 0)) {
-        long time = System.currentTimeMillis();
 
         HouseSupervisor asset = new HouseSupervisor();
         asset.setPaymentFrom("tenant");
         asset.setPaymentTo("landlord");
         asset.setRent(450);
-        asset.setTimestamp(new Timestamp(time).toString());
+        asset.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
-        stub.putState(key, asset.toJSONString().getBytes(UTF_8));
+        ctx.getStub().putState(key, asset.toJSONString().getBytes(UTF_8));
 
         return "Payment ok: " + key;
-           /* } else {
-                return "Payment already exist";
-            }
-        } else {
-            return "Access denied to this method by this type of account, only tenant can pay this";
-        }*/
     }
 
     @Transaction
