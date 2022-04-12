@@ -1,5 +1,5 @@
 {
-  "$schema": "https://github.com/softwaremill/fablo/releases/download/1.0.0/schema.json",
+  "$schema": "https://github.com/softwaremill/fablo/releases/download/1.0.2/schema.json",
   "global": {
     "fabricVersion": "2.4.1",
     "tls": true,
@@ -19,8 +19,7 @@
           "type": "raft",
           "instances": 2
         }
-      ],
-      "tools": {}
+      ]
     },
     {
       "organization": {
@@ -63,6 +62,20 @@
       "tools": {
         "fabloRest": true
       }
+    },
+    {
+      "organization": {
+        "name": "Sensors1",
+        "domain": "sensors1.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
     }
   ],
   "channels": [
@@ -86,6 +99,12 @@
           "peers": [
             "peer0"
           ]
+        },
+        {
+          "name": "Sensors1",
+          "peers": [
+            "peer0"
+          ]
         }
       ]
     }
@@ -96,7 +115,7 @@
       "version": "0.0.1",
       "lang": "java",
       "channel": "home1",
-      "directory": "../house-supervisor-chaincode",
+      "directory": "../house-chaincode",
       "endorsement": "OR('Landlord1MSP.member', 'Tenant1MSP.member', 'Guest1MSP.member')"
     }
   ]

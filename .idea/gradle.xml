@@ -5,10 +5,10 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/house-supervisor-chaincode" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/house-chaincode" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/house-supervisor-chaincode" />
+            <option value="$PROJECT_DIR$/house-chaincode" />
           </set>
         </option>
       </GradleProjectSettings>

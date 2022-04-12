@@ -2,8 +2,11 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="PokeballContract.main" target="1.8" />
-      <module name="PokeballContract.test" target="1.8" />
+      <module name="house-chaincode.HouseContracts.main" target="1.8" />
+      <module name="house-chaincode.HouseContracts.test" target="1.8" />
+      <module name="HouseSupervisorContract" target="1.8" />
+      <module name="HouseSupervisorContract.main" target="1.8" />
+      <module name="HouseSupervisorContract.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

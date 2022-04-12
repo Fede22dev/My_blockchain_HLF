@@ -14,13 +14,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static project.supervisor.Supervisor.*;
 import static project.supervisor.SupervisorBenchmark.invokeBenchmark;
 import static project.supervisor.SupervisorBenchmark.queryBenchmark;
-import static project.weather.Weather.insertHouseData;
+import static project.weather.Weather.readAllHouseData;
+import static project.weather.Weather.startInsertHouseData;
 
 public class Main {
     public final static String ANSI_RESET = "\u001B[0m";
@@ -33,7 +35,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         while (true) {
-            System.out.print("Command --> [1 = enroll] [2 = invoke] [3 = query] [4 = performance evaluation supervisor] [5 = start insert data house] [6 = stop]: ");
+            System.out.print("Command --> [1 = enroll] [2 = invoke] [3 = query] [4 = performance evaluation supervisor] [5 = start insert house data] [6 = read house data] [7 = stop]: ");
             switch (CONSOLE.readLine().strip()) {
                 case "1" -> {
                     try {
@@ -116,11 +118,27 @@ public class Main {
                     }
                 }
 
-                case "5" -> {
-                    insertHouseData();
+                case "5" -> startInsertHouseData();
+
+                case "6" -> {
+                    boolean goQuery = true;
+                    while (goQuery) {
+                        System.out.print("Method --> [1 = readAllHouseData] [2 = stop query]: ");
+                        switch (CONSOLE.readLine().strip()) {
+                            case "1" -> {
+                                try {
+                                    readAllHouseData();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            case "2" -> goQuery = false;
+                        }
+                    }
                 }
 
-                case "6" -> System.exit(0);
+                case "7" -> System.exit(0);
             }
         }
     }
