@@ -1,28 +1,18 @@
 package project;
 
-import com.opencsv.CSVWriter;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.client.fluent.Response;
-import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import static project.Enroll.*;
+import static project.sensor.Sensor.*;
+import static project.sensor.SensorBenchmark.benchmarkSensorInvoke;
+import static project.sensor.SensorBenchmark.benchmarkSensorQuery;
 import static project.supervisor.Supervisor.*;
-import static project.supervisor.SupervisorBenchmark.invokeBenchmark;
-import static project.supervisor.SupervisorBenchmark.queryBenchmark;
-import static project.weather.Weather.readAllHouseData;
-import static project.weather.Weather.startInsertHouseData;
+import static project.supervisor.SupervisorBenchmark.benchmarkSupervisorInvoke;
+import static project.supervisor.SupervisorBenchmark.benchmarkSupervisorQuery;
 
 public class Main {
     public final static String ANSI_RESET = "\u001B[0m";
@@ -33,55 +23,34 @@ public class Main {
     public final static BufferedReader CONSOLE = new BufferedReader(new InputStreamReader(System.in));
     public final static HashMap<String, String> TOKEN = new HashMap<>();
 
-    public static void main(String[] args) throws IOException {
+    public static final String LANDLORDPORT = "8801";
+    public static final String TENANTPORT = "8802";
+    public static final String GUESTPORT = "8803";
+    public static final String SENSORPORT = "8804";
+
+    public static void main(String[] args) throws IOException, ParseException {
+        timerEnroll(SENSORPORT);
+        timerEnroll(TENANTPORT);
+        //timerEnroll(GUESTPORT);
+        //timerEnroll(LANDLORDPORT);
+
+        startWeatherSensor(false);
+        startElectricitySensor(false);
+
         while (true) {
-            System.out.print("Command --> [1 = enroll] [2 = invoke] [3 = query] [4 = performance evaluation supervisor] [5 = start insert house data] [6 = read house data] [7 = stop]: ");
+            System.out.print("Command --> [1 = enroll] [2 = invoke supervisor] [3 = query supervisor] [4 = performance] [5 = query house data] [6 = able/disable debug print sensor] [7 = stop]: ");
             switch (CONSOLE.readLine().strip()) {
-                case "1" -> {
-                    try {
-                        enroll(true);
-                    } catch (ConnectException e) {
-                        System.err.println("Connection refused");
-                    }
-                }
+                case "1" -> enroll();
 
                 case "2" -> {
                     boolean goInvoke = true;
                     while (goInvoke) {
                         System.out.print("Method --> [1 = payRent] [2 = payDeposit] [3 = payBill] [4 = payCondominiumFees] [5 = stop invoke]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> {
-                                try {
-                                    payRent();
-                                } catch (ConnectException e) {
-                                    System.err.println("Connection refused");
-                                }
-                            }
-
-                            case "2" -> {
-                                try {
-                                    payDeposit();
-                                } catch (ConnectException e) {
-                                    System.err.println("Connection refused");
-                                }
-                            }
-
-                            case "3" -> {
-                                try {
-                                    payBill();
-                                } catch (ConnectException e) {
-                                    System.err.println("Connection refused");
-                                }
-                            }
-
-                            case "4" -> {
-                                try {
-                                    payCondominiumFees();
-                                } catch (ConnectException e) {
-                                    System.err.println("Connection refused");
-                                }
-                            }
-
+                            case "1" -> payRent();
+                            case "2" -> payDeposit();
+                            case "3" -> payBill();
+                            case "4" -> payCondominiumFees();
                             case "5" -> goInvoke = false;
                         }
                     }
@@ -92,14 +61,7 @@ public class Main {
                     while (goQuery) {
                         System.out.print("Method --> [1 = readAllPaymentType] [2 = stop query]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> {
-                                try {
-                                    readAllPaymentType();
-                                } catch (ConnectException e) {
-                                    System.err.println("Connection refused");
-                                }
-                            }
-
+                            case "1" -> readAllPaymentType();
                             case "2" -> goQuery = false;
                         }
                     }
@@ -108,99 +70,46 @@ public class Main {
                 case "4" -> {
                     boolean goPerformance = true;
                     while (goPerformance) {
-                        System.out.print("Method --> [1 = enroll] [2 = invoke] [3 = query] [4 = stop performance]: ");
+                        System.out.print("Method --> [1 = bench enroll] [2 = bench supervisor invoke] [3 = bench supervisor query] [4 = bench sensor invoke] [5 = bench sensor query] [6 = stop bench]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> enroll(false);
-                            case "2" -> invokeBenchmark();
-                            case "3" -> queryBenchmark();
-                            case "4" -> goPerformance = false;
+                            case "1" -> benchmarkEnroll();
+                            case "2" -> benchmarkSupervisorInvoke();
+                            case "3" -> benchmarkSupervisorQuery();
+                            case "4" -> benchmarkSensorInvoke();
+                            case "5" -> benchmarkSensorQuery();
+                            case "6" -> goPerformance = false;
                         }
                     }
                 }
 
-                case "5" -> startInsertHouseData();
-
-                case "6" -> {
+                case "5" -> {
                     boolean goQuery = true;
                     while (goQuery) {
-                        System.out.print("Method --> [1 = readAllHouseData] [2 = stop query]: ");
+                        System.out.print("Method --> [1 = read electricity data] [2 = read weather data] [3 = stop query]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> {
-                                try {
-                                    readAllHouseData();
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                            case "1" -> readAllHouseData(false);
+                            case "2" -> readAllHouseData(true);
+                            case "3" -> goQuery = false;
+                        }
+                    }
+                }
 
-                            case "2" -> goQuery = false;
+                case "6" -> {
+                    System.out.print("Method --> [1 = able debug print sensor] [2 = disable debug print sensor]: ");
+                    switch (CONSOLE.readLine().strip()) {
+                        case "1" -> {
+                            startWeatherSensor(true);
+                            startElectricitySensor(true);
+                        }
+                        case "2" -> {
+                            startWeatherSensor(false);
+                            startElectricitySensor(false);
                         }
                     }
                 }
 
                 case "7" -> System.exit(0);
             }
-        }
-    }
-
-    private static void enroll(boolean operationType) throws IOException {
-        if (operationType) {
-            System.out.print("[Peer PORT]: ");
-            String port = CONSOLE.readLine().strip();
-            Request request = Request.Post("http://localhost:" + port + "/user/enroll");
-            String body = "{\"id\": \"admin\", \"secret\": \"adminpw\"}";
-            request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-            request.setHeader("Authorization", "Bearer");
-            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            long startTime = System.nanoTime();
-            Response response = request.execute();
-            long endTime = System.nanoTime();
-            HttpResponse httpResponse = response.returnResponse();
-            HttpEntity entity = httpResponse.getEntity();
-            if (entity != null) {
-                String html = EntityUtils.toString(entity);
-                System.out.println(html);
-                System.out.println(ANSI_BLUE + "EXECUTION TIME: " + ((double) (endTime - startTime) / OBL) + " sec" + ANSI_RESET);
-                JSONObject object = new JSONObject(html);
-                String tokenAdmin = object.getString("token");
-                TOKEN.put(port, tokenAdmin);
-            }
-        } else {
-            System.out.print("[Peer PORT]: ");
-            String port = CONSOLE.readLine().strip();
-            Request request = Request.Post("http://localhost:" + port + "/user/enroll");
-            String body = "{\"id\": \"admin\", \"secret\": \"adminpw\"}";
-            request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-            request.setHeader("Authorization", "Bearer");
-            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            ArrayList<Double> times = new ArrayList<>();
-            for (int i = 0; i < 250; i++) {
-                long startTime = System.nanoTime();
-                Response response = request.execute();
-                long endTime = System.nanoTime();
-                HttpResponse httpResponse = response.returnResponse();
-                HttpEntity entity = httpResponse.getEntity();
-                if (entity != null) {
-                    String html = EntityUtils.toString(entity);
-                    System.out.print("\r" + "ENROLL: " + (i + 1) + " -> " + html);
-                    times.add((double) (endTime - startTime) / OBL);
-                }
-            }
-
-            CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/benchenroll.csv"));
-            writer.writeNext(new String[]{"enroll time"});
-
-            double total = 0;
-            for (double time : times) {
-                total += time;
-                writer.writeNext(new String[]{String.valueOf(time).replace(".", ",")});
-
-            }
-            writer.close();
-            double average = total / times.size();
-            System.out.println("\n" + ANSI_BLUE + "TOTAL EXECUTION TIME: " + total + " sec" + ANSI_RESET);
-            System.out.println(ANSI_BLUE + "AVERAGE EXECUTION TIME: " + average + " sec" + ANSI_RESET);
-            System.out.println(ANSI_BLUE + "TRANSACTION PER MINUTE: " + OMIN / average + " transaction/min" + ANSI_RESET);
         }
     }
 }

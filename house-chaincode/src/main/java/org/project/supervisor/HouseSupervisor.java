@@ -2,7 +2,6 @@ package org.project.supervisor;
 
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 /**
@@ -39,26 +38,6 @@ public class HouseSupervisor {
         deposit = 0;
         bills = 0;
         condominiumFees = 0;
-    }
-
-    public static @NotNull HouseSupervisor fromJSONString(String json) {
-        JSONObject jsonObject = new JSONObject(json);
-        String paymentFrom = jsonObject.getString("paymentFrom");
-        String paymentTo = jsonObject.getString("paymentTo");
-        double rent = jsonObject.getDouble("rent");
-        double deposit = jsonObject.getDouble("deposit");
-        double bills = jsonObject.getDouble("bills");
-        double condominiumFees = jsonObject.getDouble("condominiumFees");
-        String timestamp = jsonObject.getString("timestamp");
-        HouseSupervisor asset = new HouseSupervisor();
-        asset.setPaymentFrom(paymentFrom);
-        asset.setPaymentTo(paymentTo);
-        asset.setRent(rent);
-        asset.setDeposit(deposit);
-        asset.setBills(bills);
-        asset.setCondominiumFees(condominiumFees);
-        asset.setTimestamp(timestamp);
-        return asset;
     }
 
     public String getPaymentFrom() {

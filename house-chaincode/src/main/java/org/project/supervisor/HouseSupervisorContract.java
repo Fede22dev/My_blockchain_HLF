@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Objects;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -44,7 +43,7 @@ public class HouseSupervisorContract implements ContractInterface {
      */
     @Transaction()
     public String payRent(@NotNull Context ctx, String paymentFrom, String paymentTo, double rent) {
-        if (Objects.equals(ctx.getClientIdentity().getMSPID(), "Tenant1MSP")) {
+        if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             String key = "RENT" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.YEAR);
             ChaincodeStub stub = ctx.getStub();
             byte[] buffer = stub.getState(key);
@@ -86,7 +85,7 @@ public class HouseSupervisorContract implements ContractInterface {
      */
     @Transaction()
     public String payDeposit(@NotNull Context ctx, String paymentFrom, String paymentTo, double deposit) {
-        if (Objects.equals(ctx.getClientIdentity().getMSPID(), "Tenant1MSP") || Objects.equals(ctx.getClientIdentity().getMSPID(), "Guest1MSP")) {
+        if (ctx.getClientIdentity().getMSPID().contains("Tenant") || ctx.getClientIdentity().getMSPID().contains("Guest")) {
             String key = "DEPOSIT" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.YEAR);
             ChaincodeStub stub = ctx.getStub();
             byte[] buffer = stub.getState(key);
@@ -128,7 +127,7 @@ public class HouseSupervisorContract implements ContractInterface {
      */
     @Transaction()
     public String payBill(@NotNull Context ctx, String paymentFrom, String paymentTo, double bills) {
-        if (Objects.equals(ctx.getClientIdentity().getMSPID(), "Tenant1MSP")) {
+        if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             String key = "BILL" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.YEAR);
             ChaincodeStub stub = ctx.getStub();
             byte[] buffer = stub.getState(key);
@@ -170,7 +169,7 @@ public class HouseSupervisorContract implements ContractInterface {
      */
     @Transaction()
     public String payCondominiumFees(@NotNull Context ctx, String paymentFrom, String paymentTo, double condominiumFees) {
-        if (Objects.equals(ctx.getClientIdentity().getMSPID(), "Tenant1MSP")) {
+        if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             String key = "CONDUMINIUMFEES" + Calendar.getInstance().get(Calendar.YEAR);
             ChaincodeStub stub = ctx.getStub();
             byte[] buffer = stub.getState(key);
