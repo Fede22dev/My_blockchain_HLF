@@ -17,7 +17,7 @@
         {
           "groupName": "group1",
           "type": "raft",
-          "instances": 2
+          "instances": 3
         }
       ]
     },
@@ -76,6 +76,62 @@
       "tools": {
         "fabloRest": true
       }
+    },
+    {
+      "organization": {
+        "name": "Landlord2",
+        "domain": "landlord2.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
+    },
+    {
+      "organization": {
+        "name": "Tenant2",
+        "domain": "tenant2.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
+    },
+    {
+      "organization": {
+        "name": "Guest2",
+        "domain": "guest2.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
+    },
+    {
+      "organization": {
+        "name": "Sensors2",
+        "domain": "sensors2.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      },
+      "tools": {
+        "fabloRest": true
+      }
     }
   ],
   "channels": [
@@ -107,6 +163,35 @@
           ]
         }
       ]
+    },
+    {
+      "name": "home2",
+      "orgs": [
+        {
+          "name": "Landlord2",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Tenant2",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Guest2",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Sensors2",
+          "peers": [
+            "peer0"
+          ]
+        }
+      ]
     }
   ],
   "chaincodes": [
@@ -117,6 +202,14 @@
       "channel": "home1",
       "directory": "../house-chaincode",
       "endorsement": "OR('Landlord1MSP.member', 'Tenant1MSP.member', 'Guest1MSP.member')"
+    },
+    {
+      "name": "chaincode2",
+      "version": "0.0.1",
+      "lang": "java",
+      "channel": "home2",
+      "directory": "../house-chaincode",
+      "endorsement": "OR('Landlord2MSP.member', 'Tenant2MSP.member', 'Guest2MSP.member')"
     }
   ]
 }

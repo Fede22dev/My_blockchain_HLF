@@ -1,0 +1,8 @@
+PeerOrgs:
+  - Name: Sensors1
+    Domain: sensors1.project.it
+    Specs:
+    Template:
+      Count: 1
+    Users:
+      Count: 1

@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "network-landlord2": {
+      "name": "Network of Landlord2",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-landlord2.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

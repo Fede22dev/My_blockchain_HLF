@@ -83,16 +83,34 @@ public class SensorBenchmark {
     public static void benchmarkSensorInvoke() {
         stopWeatherSensor();
         new Timer().schedule(new TimerTask() {
-            final ThreadLocalRandom tlr = ThreadLocalRandom.current();
-            final ArrayList<Double> times = new ArrayList<>();
-            final long t0 = System.currentTimeMillis();
-            int i = 1;
+            private final ArrayList<Double> times = new ArrayList<>();
+            private final long t0 = System.currentTimeMillis();
+            private int i = 1;
+            private boolean go = true;
+
+            private synchronized void addTime(double time) {
+                times.add(time);
+            }
+
+            private synchronized int getIndex() {
+                return i++;
+            }
+
+            private synchronized void stopGo() {
+                this.go = false;
+            }
+
+            private synchronized boolean getGo() {
+                return go;
+            }
 
             @Override
             public void run() {
                 if (System.currentTimeMillis() - t0 > 1000 * 60) {
                     cancel();
+                    stopGo();
                     try {
+                        Thread.sleep(2000);
                         CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_sensor_invoke.csv"));
                         writer.writeNext(new String[]{"invoke sensor time"});
 
@@ -108,32 +126,36 @@ public class SensorBenchmark {
                         System.out.println(ANSI_BLUE + "TRANSACTION PER MINUTE: " + OMIN / average + " transaction/min" + ANSI_RESET);
 
                         startWeatherSensor(false);
-                    } catch (IOException e) {
+                    } catch (IOException | InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 } else {
-                    try {
-                        Request request = Request.Post("http://localhost:" + SENSORPORT + "/invoke/home1/chaincode1");
-                        request.setHeader("Authorization", "Bearer " + TOKEN.get(SENSORPORT));
-                        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-                        String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(10, 35) + "\", \"" + tlr.nextDouble(0, 100) + "\" ] }";
-                        request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-                        long startTime = System.nanoTime();
-                        Response response = request.execute();
-                        long endTime = System.nanoTime();
-                        HttpResponse httpResponse = response.returnResponse();
-                        HttpEntity entity = httpResponse.getEntity();
-                        if (entity != null) {
-                            String html = EntityUtils.toString(entity);
-                            System.out.print("\r" + "INVOKE: " + i + " " + html);
-                            i++;
-                            times.add((double) (endTime - startTime) / OBL);
+                    new Thread(() -> {
+                        if (getGo()) {
+                            try {
+                                Request request = Request.Post("http://localhost:" + SENSORPORT + "/invoke/home1/chaincode1");
+                                request.setHeader("Authorization", "Bearer " + TOKEN.get(SENSORPORT));
+                                request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+                                ThreadLocalRandom tlr = ThreadLocalRandom.current();
+                                String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(10, 35) + "\", \"" + tlr.nextDouble(0, 100) + "\" ] }";
+                                request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
+                                long startTime = System.nanoTime();
+                                Response response = request.execute();
+                                long endTime = System.nanoTime();
+                                HttpResponse httpResponse = response.returnResponse();
+                                HttpEntity entity = httpResponse.getEntity();
+                                if (entity != null) {
+                                    String html = EntityUtils.toString(entity);
+                                    System.out.println("INVOKE: " + getIndex() + " " + html);
+                                    addTime((double) (endTime - startTime) / OBL);
+                                }
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    }).start();
                 }
             }
-        }, 0, 125);
+        }, 0, 50);
     }
 }

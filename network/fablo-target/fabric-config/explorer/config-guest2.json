@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "network-guest2": {
+      "name": "Network of Guest2",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-guest2.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

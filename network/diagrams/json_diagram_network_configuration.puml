@@ -1,0 +1,105 @@
+@startjson
+{
+  "global": {
+    "fabricVersion": "2.4.1",
+    "tls": true
+  },
+  "orgs": [
+    {
+      "organization": {
+        "name": "Orderer",
+        "domain": "orderer.project.it"
+      },
+      "orderers": [
+        {
+          "groupName": "group1",
+          "type": "raft",
+          "instances": 2
+        }
+      ]
+    },
+    {
+      "organization": {
+        "name": "Landlord_num",
+        "domain": "landlord.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      }
+    },
+    {
+      "organization": {
+        "name": "Tenant_num",
+        "domain": "tenant.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      }
+    },
+    {
+      "organization": {
+        "name": "Guest_num",
+        "domain": "guest.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      }
+    },
+    {
+      "organization": {
+        "name": "Sensors_num",
+        "domain": "sensors.project.it"
+      },
+      "peer": {
+        "instances": 1,
+        "anchorPeerInstances": 1,
+        "db": "CouchDb"
+      }
+    }
+  ],
+  "channels": [
+    {
+      "name": "home_num",
+      "orgs": [
+        {
+          "name": "Landlord_num",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Tenant_num",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Guest_num",
+          "peers": [
+            "peer0"
+          ]
+        },
+        {
+          "name": "Sensors_num",
+          "peers": [
+            "peer0"
+          ]
+        }
+      ]
+    }
+  ],
+  "chaincodes": [
+    {
+      "name": "chaincode_name",
+      "channel": "home_num",
+      "endorsement": "OR(all MSP orgs)"
+    }
+  ]
+}
+@endjson
