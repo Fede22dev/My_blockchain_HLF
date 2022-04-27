@@ -18,6 +18,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/network/console-test" />
+            <option value="$PROJECT_DIR$/network/console-test/client" />
+            <option value="$PROJECT_DIR$/network/console-test/server" />
           </set>
         </option>
       </GradleProjectSettings>

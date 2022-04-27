@@ -1,9 +1,0 @@
-{
-  "network-configs": {
-    "network-sensors1": {
-      "name": "Network of Sensors1",
-      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-sensors1.json"
-    }
-  },
-  "license": "Apache-2.0"
-}

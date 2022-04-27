@@ -1,8 +1,0 @@
-PeerOrgs:
-  - Name: Sensors2
-    Domain: sensors2.project.it
-    Specs:
-    Template:
-      Count: 1
-    Users:
-      Count: 1

@@ -23,7 +23,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
                 @License(name = "Apache2.0"),
                 contact = @Contact(email = "HouseSensor@example.com",
                         name = "House Sensor",
-                        url = "http://housesensor.org")))
+                        url = "https://housesensor.org")))
 @Default
 public class HouseSensorContract implements ContractInterface {
     public HouseSensorContract() {

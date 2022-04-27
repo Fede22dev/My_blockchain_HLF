@@ -1,8 +1,0 @@
-PeerOrgs:
-  - Name: Guest1
-    Domain: guest1.project.it
-    Specs:
-    Template:
-      Count: 1
-    Users:
-      Count: 1

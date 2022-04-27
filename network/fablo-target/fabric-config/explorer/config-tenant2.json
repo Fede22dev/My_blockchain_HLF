@@ -1,9 +1,0 @@
-{
-  "network-configs": {
-    "network-tenant2": {
-      "name": "Network of Tenant2",
-      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-tenant2.json"
-    }
-  },
-  "license": "Apache-2.0"
-}

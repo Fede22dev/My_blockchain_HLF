@@ -22,7 +22,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
                 @License(name = "Apache2.0"),
                 contact = @Contact(email = "HouseSupervisor@example.com",
                         name = "House Supervisor",
-                        url = "http://housesupervisor.org")))
+                        url = "https://housesupervisor.org")))
 @Default
 public class HouseSupervisorContract implements ContractInterface {
     public HouseSupervisorContract() {
@@ -238,8 +238,8 @@ public class HouseSupervisorContract implements ContractInterface {
     }
 
     @Transaction()
-    public String invokeBenchmark(@NotNull Context ctx, int i) {
-        String key = "BENCH" + i;
+    public String invokeBenchmark(@NotNull Context ctx) {
+        String key = "BENCH" + System.currentTimeMillis();
 
         HouseSupervisor asset = new HouseSupervisor();
         asset.setPaymentFrom("tenant");
@@ -253,7 +253,14 @@ public class HouseSupervisorContract implements ContractInterface {
     }
 
     @Transaction
-    public String queryBenchmark(@NotNull Context ctx, int i) {
-        return ctx.getStub().getStringState("BENCH" + i);
+    public String queryBenchmark(@NotNull Context ctx, long startMillis, long endMillis) {
+        QueryResultsIterator<KeyValue> results = ctx.getStub().getStateByRange("BENCH" + startMillis, "BENCH" + endMillis);
+
+        ArrayList<String> queryResults = new ArrayList<>();
+        for (KeyValue result : results) {
+            queryResults.add(result.getKey() + ":" + result.getStringValue());
+        }
+
+        return queryResults.toString();
     }
 }
