@@ -1,6 +1,5 @@
 package org.project.hlf.supervisor;
 
-import org.apache.http.util.EntityUtils;
 import org.project.models.MyRequest;
 import org.project.models.MyResponse;
 import org.project.server.ServerReference;
@@ -28,7 +27,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerReference.getServer().payRent(new MyRequest(request, body, port));
 
-        System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+        System.out.println(myResponse.response());
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
     }
 
@@ -48,7 +47,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerReference.getServer().payDeposit(new MyRequest(request, body, port));
 
-        System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+        System.out.println(myResponse.response());
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
     }
 
@@ -68,7 +67,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerReference.getServer().payBill(new MyRequest(request, body, port));
 
-        System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+        System.out.println(myResponse.response());
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
     }
 
@@ -88,7 +87,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerReference.getServer().payCondominiumFees(new MyRequest(request, body, port));
 
-        System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+        System.out.println(myResponse.response());
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
     }
 
@@ -116,9 +115,8 @@ public class Supervisor {
 
                 MyResponse myResponse = ServerReference.getServer().readAllPaymentType(new MyRequest(request, body, port));
 
-                System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+                System.out.println(myResponse.response());
                 System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
-
             } catch (NumberFormatException e) {
                 System.err.println("Only number");
             }

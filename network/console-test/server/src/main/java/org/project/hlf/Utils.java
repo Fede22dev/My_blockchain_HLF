@@ -3,6 +3,7 @@ package org.project.hlf;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
+import org.apache.http.util.EntityUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.project.models.MyRequest;
@@ -23,6 +24,6 @@ public class Utils {
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();
-        return new MyResponse(response, ((double) (endTime - startTime) / OBL));
+        return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / OBL));
     }
 }

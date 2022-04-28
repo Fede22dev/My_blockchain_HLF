@@ -1,6 +1,5 @@
 package org.project.hlf.sensor;
 
-import org.apache.http.util.EntityUtils;
 import org.project.models.MyRequest;
 import org.project.models.MyResponse;
 import org.project.server.ServerReference;
@@ -43,10 +42,10 @@ public class Sensor {
         } else {
             body = "{ \"method\": \"HouseSensorContract:readAllHouseElectricity\", \"args\": [ \"" + startMillis + "\", \"" + endMillis + "\" ] }";
         }
-        
+
         MyResponse myResponse = ServerReference.getServer().enroll(new MyRequest(request, body, TENANTPORT));
 
-        System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+        System.out.println(myResponse.response());
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
     }
 }

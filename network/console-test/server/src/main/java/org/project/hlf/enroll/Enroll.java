@@ -33,7 +33,7 @@ public class Enroll {
             JSONObject object = new JSONObject(html);
             String token = object.getString("token");
             ServerImpl.putToken(myRequest.port(), token);
-            return new MyResponse(response, ((double) (endTime - startTime) / OBL));
+            return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / OBL));
         }
         return null;
     }

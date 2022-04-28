@@ -1,6 +1,5 @@
 package org.project.hlf.enroll;
 
-import org.apache.http.util.EntityUtils;
 import org.project.Main;
 import org.project.models.MyRequest;
 import org.project.models.MyResponse;
@@ -17,7 +16,7 @@ public class Enroll {
         String body = "{\"id\": \"admin\", \"secret\": \"adminpw\"}";
         MyResponse myResponse = ServerReference.getServer().enroll(new MyRequest(request, body, port));
 
-        System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
+        System.out.println(myResponse.response());
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
     }
 
