@@ -6,8 +6,8 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.project.models.MyRequest;
 import org.project.models.MyResponse;
 import org.project.server.ServerImpl;
 
@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+import static org.project.hlf.Utils.execRequest;
 import static org.project.server.ServerImpl.*;
 
 public class Sensor {
@@ -72,12 +73,7 @@ public class Sensor {
         }
     }
 
-    @Contract("_, _ -> new")
-    public static @NotNull MyResponse readAllHouseData(@NotNull Request request, String port) throws IOException {
-        request.setHeader("Authorization", "Bearer " + ServerImpl.getToken(port));
-        long startTime = System.nanoTime();
-        Response response = request.execute();
-        long endTime = System.nanoTime();
-        return new MyResponse(response, ((double) (endTime - startTime) / OBL));
+    public static @NotNull MyResponse readAllHouseData(@NotNull MyRequest myRequest) throws IOException {
+        return execRequest(myRequest);
     }
 }

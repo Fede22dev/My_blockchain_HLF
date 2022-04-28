@@ -1,8 +1,7 @@
 package org.project.hlf.sensor;
 
-import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
+import org.project.models.MyRequest;
 import org.project.models.MyResponse;
 import org.project.server.ServerReference;
 
@@ -16,7 +15,7 @@ import static org.project.Main.TENANTPORT;
 
 public class Sensor {
     public static void readAllHouseData(boolean dataType) throws IOException, ParseException, NotBoundException {
-        Request request = Request.Post("http://localhost:" + TENANTPORT + "/query/home1/chaincode1");
+        String request = "http://localhost:" + TENANTPORT + "/query/home1/chaincode1";
         System.out.print("Start day: ");
         String startDay = CONSOLE.readLine().strip();
         System.out.print("Start month: ");
@@ -44,11 +43,8 @@ public class Sensor {
         } else {
             body = "{ \"method\": \"HouseSensorContract:readAllHouseElectricity\", \"args\": [ \"" + startMillis + "\", \"" + endMillis + "\" ] }";
         }
-
-        request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        MyResponse myResponse = ServerReference.getServer().enroll(request, TENANTPORT);
+        
+        MyResponse myResponse = ServerReference.getServer().enroll(new MyRequest(request, body, TENANTPORT));
 
         System.out.println(EntityUtils.toString(myResponse.response().returnResponse().getEntity()));
         System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());

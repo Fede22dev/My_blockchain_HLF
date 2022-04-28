@@ -15,6 +15,7 @@ import org.project.hlf.sensor.benchmark.query.SensorQueryBenchmark;
 import org.project.hlf.supervisor.Supervisor;
 import org.project.hlf.supervisor.benchmark.invoke.SupervisorInvokeBenchmark;
 import org.project.hlf.supervisor.benchmark.query.SupervisorQueryBenchmark;
+import org.project.models.MyRequest;
 import org.project.models.MyResponse;
 import org.project.server.Interface.Server;
 
@@ -83,9 +84,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public synchronized MyResponse enroll(Request request, String port) throws RemoteException {
+    public synchronized MyResponse enroll(MyRequest myRequest) throws RemoteException {
         try {
-            return Enroll.enroll(request, port);
+            return Enroll.enroll(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -101,9 +102,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public synchronized MyResponse readAllHouseData(Request request, String port) throws RemoteException {
+    public synchronized MyResponse readAllHouseData(MyRequest myRequest) throws RemoteException {
         try {
-            return Sensor.readAllHouseData(request, port);
+            return Sensor.readAllHouseData(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -128,45 +129,45 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public synchronized MyResponse payRent(Request request, String port) throws RemoteException {
+    public synchronized MyResponse payRent(MyRequest myRequest) throws RemoteException {
         try {
-            return Supervisor.payRent(request, port);
+            return Supervisor.payRent(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public synchronized MyResponse payDeposit(Request request, String port) throws RemoteException {
+    public synchronized MyResponse payDeposit(MyRequest myRequest) throws RemoteException {
         try {
-            return Supervisor.payDeposit(request, port);
+            return Supervisor.payDeposit(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public synchronized MyResponse payBill(Request request, String port) throws RemoteException {
+    public synchronized MyResponse payBill(MyRequest myRequest) throws RemoteException {
         try {
-            return Supervisor.payBill(request, port);
+            return Supervisor.payBill(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public synchronized MyResponse payCondominiumFees(Request request, String port) throws RemoteException {
+    public synchronized MyResponse payCondominiumFees(MyRequest myRequest) throws RemoteException {
         try {
-            return Supervisor.payCondominiumFees(request, port);
+            return Supervisor.payCondominiumFees(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public synchronized MyResponse readAllPaymentType(Request request, String port) throws RemoteException {
+    public synchronized MyResponse readAllPaymentType(MyRequest myRequest) throws RemoteException {
         try {
-            return Supervisor.readAllPaymentType(request, port);
+            return Supervisor.readAllPaymentType(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
