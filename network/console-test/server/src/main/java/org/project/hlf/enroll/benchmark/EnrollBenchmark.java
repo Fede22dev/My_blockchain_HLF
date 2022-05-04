@@ -10,9 +10,23 @@ import java.util.HashMap;
 import java.util.stream.Stream;
 
 public class EnrollBenchmark {
+    private static final Thread[] threads = new Thread[3];
+
     public static @NotNull String benchmarkEnroll() throws InterruptedException, IOException {
-        for (int i = 1; i < 4; i++) {
-            MainEnrollBenchmark.main(new String[]{String.valueOf(i)});
+        for (int i = 0; i < 3; i++) {
+            int finalI = i + 1;
+             threads[i] = new Thread(() -> {
+                try {
+                    TestEnrollBenchmark.testEnroll(String.valueOf(finalI));
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        for (int i = 0; i < 3; i++) {
+            threads[i].join();
+            threads[i].start();
         }
 
         CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_enroll.csv"));
@@ -25,10 +39,10 @@ public class EnrollBenchmark {
         int list3Length = hashMap.get("3").size();
 
         int max = Stream.of(list1Length, list2Length, list3Length).max(Integer::compareTo).get();
-        for (int i = 0; i < max - 1; i++) {
-            writer.writeNext(new String[]{String.valueOf(i > list1Length ? "" : hashMap.get("1").get(i)).replace(".", ","),
-                    String.valueOf(i > list2Length ? "" : hashMap.get("2").get(i)).replace(".", ","),
-                    String.valueOf(i > list3Length ? "" : hashMap.get("3").get(i)).replace(".", ",")}
+        for (int i = 0; i < max; i++) {
+            writer.writeNext(new String[]{String.valueOf(i > list1Length - 1 ? "" : hashMap.get("1").get(i)).replace(".", ","),
+                    String.valueOf(i > list2Length - 1 ? "" : hashMap.get("2").get(i)).replace(".", ","),
+                    String.valueOf(i > list3Length - 1 ? "" : hashMap.get("3").get(i)).replace(".", ",")}
             );
         }
 

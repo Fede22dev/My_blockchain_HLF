@@ -6,7 +6,6 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.project.server.ServerImpl.*;
 
-public class MainEnrollBenchmark {
+class TestEnrollBenchmark {
     private static final ArrayList<Double> times = new ArrayList<>();
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
     private static final Request request = Request.Post("http://localhost:" + TENANTPORT + "/user/enroll");
@@ -25,19 +24,6 @@ public class MainEnrollBenchmark {
 
     private static synchronized void addTime(double time) {
         times.add(time);
-    }
-
-    public static void main(String @NotNull [] args) throws InterruptedException {
-        String body = "{\"id\": \"admin\", \"secret\": \"adminpw\"}";
-        request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-        request.setHeader("Authorization", "Bearer");
-        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        startNewExecutor();
-        Thread.sleep(1000 * MINTEST);
-        future.cancel(false);
-
-        EnrollDataBenchmark.putTimes(args[0], times);
     }
 
     private static void startNewExecutor() {
@@ -57,5 +43,18 @@ public class MainEnrollBenchmark {
                 throw new RuntimeException(e);
             }
         }, 0, RATETESTMILLIS, TimeUnit.MILLISECONDS);
+    }
+
+    static void testEnroll(String key) throws InterruptedException {
+        String body = "{\"id\": \"admin\", \"secret\": \"adminpw\"}";
+        request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
+        request.setHeader("Authorization", "Bearer");
+        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        startNewExecutor();
+        Thread.sleep(1000 * MINTEST);
+        future.cancel(false);
+
+        EnrollDataBenchmark.putTimes(key, times);
     }
 }
