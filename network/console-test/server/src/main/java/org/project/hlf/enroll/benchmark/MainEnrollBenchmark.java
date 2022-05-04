@@ -12,14 +12,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import static org.project.server.ServerImpl.OBL;
+import static org.project.server.ServerImpl.*;
 
 public class MainEnrollBenchmark {
     private static final ArrayList<Double> times = new ArrayList<>();
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
-    private static final Request request = Request.Post("http://localhost:8802/user/enroll");
+    private static final Request request = Request.Post("http://localhost:" + TENANTPORT + "/user/enroll");
+    private static ScheduledFuture<?> future;
 
     private static synchronized void addTime(double time) {
         times.add(time);
@@ -32,14 +34,14 @@ public class MainEnrollBenchmark {
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
         startNewExecutor();
-        Thread.sleep(1000 * 60);
-        executor.shutdownNow();
+        Thread.sleep(1000 * MINTEST);
+        future.cancel(false);
 
         EnrollDataBenchmark.putTimes(args[0], times);
     }
 
     private static void startNewExecutor() {
-        executor.scheduleAtFixedRate(() -> {
+        future = executor.scheduleAtFixedRate(() -> {
             try {
                 long startTime = System.nanoTime();
                 Response response = request.execute();
@@ -48,12 +50,12 @@ public class MainEnrollBenchmark {
                 HttpEntity entity = httpResponse.getEntity();
                 if (entity != null) {
                     String html = EntityUtils.toString(entity);
-                    System.out.print("\r" + "ENROLL: " + " -> " + html);
+                    System.out.println("ENROLL: " + html);
                     addTime((double) (endTime - startTime) / OBL);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }, 0, 500, TimeUnit.MILLISECONDS);
+        }, 0, RATETESTMILLIS, TimeUnit.MILLISECONDS);
     }
 }

@@ -9,8 +9,7 @@ import java.rmi.NotBoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.project.Main.CONSOLE;
-import static org.project.Main.TENANTPORT;
+import static org.project.MainClient.*;
 
 public class Sensor {
     public static void readAllHouseData(boolean dataType) throws IOException, ParseException, NotBoundException {
@@ -43,9 +42,9 @@ public class Sensor {
             body = "{ \"method\": \"HouseSensorContract:readAllHouseElectricity\", \"args\": [ \"" + startMillis + "\", \"" + endMillis + "\" ] }";
         }
 
-        MyResponse myResponse = ServerReference.getServer().enroll(new MyRequest(request, body, TENANTPORT));
+        MyResponse myResponse = ServerReference.getServer().readAllHouseData(new MyRequest(request, body, TENANTPORT));
 
         System.out.println(myResponse.response());
-        System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
+        System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 }

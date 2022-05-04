@@ -7,8 +7,7 @@ import org.project.server.ServerReference;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
-import static org.project.Main.CONSOLE;
-import static org.project.Main.TYPOLOGY;
+import static org.project.MainClient.*;
 
 public class Supervisor {
     public static void payRent() throws IOException, NotBoundException {
@@ -28,7 +27,7 @@ public class Supervisor {
         MyResponse myResponse = ServerReference.getServer().payRent(new MyRequest(request, body, port));
 
         System.out.println(myResponse.response());
-        System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
+        System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
     public static void payDeposit() throws IOException, NotBoundException {
@@ -48,7 +47,7 @@ public class Supervisor {
         MyResponse myResponse = ServerReference.getServer().payDeposit(new MyRequest(request, body, port));
 
         System.out.println(myResponse.response());
-        System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
+        System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
     public static void payBill() throws IOException, NotBoundException {
@@ -68,7 +67,7 @@ public class Supervisor {
         MyResponse myResponse = ServerReference.getServer().payBill(new MyRequest(request, body, port));
 
         System.out.println(myResponse.response());
-        System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
+        System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
     public static void payCondominiumFees() throws IOException, NotBoundException {
@@ -88,7 +87,7 @@ public class Supervisor {
         MyResponse myResponse = ServerReference.getServer().payCondominiumFees(new MyRequest(request, body, port));
 
         System.out.println(myResponse.response());
-        System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
+        System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
     public static void readAllPaymentType() throws IOException, NotBoundException {
@@ -116,7 +115,7 @@ public class Supervisor {
                 MyResponse myResponse = ServerReference.getServer().readAllPaymentType(new MyRequest(request, body, port));
 
                 System.out.println(myResponse.response());
-                System.out.println("TOTAL EXECUTION TIME: " + myResponse.executionTime());
+                System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
             } catch (NumberFormatException e) {
                 System.err.println("Only number");
             }

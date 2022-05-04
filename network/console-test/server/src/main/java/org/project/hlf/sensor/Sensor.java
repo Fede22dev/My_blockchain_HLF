@@ -35,7 +35,7 @@ public class Sensor {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }, 0, 10000, TimeUnit.MILLISECONDS);
+                }, 10, 30, TimeUnit.SECONDS);
     }
 
     public static void startElectricitySensor() {
@@ -57,7 +57,7 @@ public class Sensor {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }, 0, 10000, TimeUnit.MILLISECONDS);
+                }, 10, 30, TimeUnit.SECONDS);
     }
 
     private static void executeRequest(@NotNull Request request) throws IOException {

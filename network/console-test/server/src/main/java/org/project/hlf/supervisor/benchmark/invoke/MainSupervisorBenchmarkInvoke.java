@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.project.server.ServerImpl.*;
@@ -22,6 +23,7 @@ class MainSupervisorBenchmarkInvoke {
     private static final ArrayList<Double> times = new ArrayList<>();
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
     private static final Request request = Request.Post("http://localhost:" + TENANTPORT + "/invoke/home1/chaincode1");
+    private static ScheduledFuture<?> future;
 
     private static synchronized void addTime(double time) {
         times.add(time);
@@ -35,13 +37,13 @@ class MainSupervisorBenchmarkInvoke {
 
         startNewExecutor();
         Thread.sleep(1000 * MINTEST);
-        executor.shutdownNow();
+        future.cancel(false);
 
         SupervisorInvokeDataBenchmark.putTimes(args[0], times);
     }
 
     private static void startNewExecutor() {
-        executor.scheduleAtFixedRate(() -> {
+        future = executor.scheduleAtFixedRate(() -> {
             try {
                 long startTime = System.nanoTime();
                 Response response = request.execute();

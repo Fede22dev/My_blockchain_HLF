@@ -35,7 +35,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public final static String TENANTPORT = "8802";
     //public final static String GUESTPORT = "8803";
     public final static String SENSORPORT = "8804";
-    public final static long MINTEST = 60 * 5;
+    public final static long MINTEST = 30;
     public final static long RATETESTMILLIS = 500; // 500 = 2 transaction per second
     private final static HashMap<String, String> TOKEN = new HashMap<>();
 

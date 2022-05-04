@@ -11,10 +11,7 @@ import org.project.server.ServerImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static org.project.server.ServerImpl.*;
 
@@ -22,6 +19,7 @@ class MainSensorBenchmarkInvoke {
     private static final ArrayList<Double> times = new ArrayList<>();
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
     private static final Request request = Request.Post("http://localhost:" + SENSORPORT + "/invoke/home1/chaincode1");
+    private static ScheduledFuture<?> future;
 
     private static synchronized void addTime(double time) {
         times.add(time);
@@ -33,13 +31,13 @@ class MainSensorBenchmarkInvoke {
 
         startNewExecutor();
         Thread.sleep(1000 * MINTEST);
-        executor.shutdownNow();
+        future.cancel(false);
 
         SensorInvokeDataBenchmark.putTimes(args[0], times);
     }
 
     private static void startNewExecutor() {
-        executor.scheduleAtFixedRate(() -> {
+        future = executor.scheduleAtFixedRate(() -> {
             try {
                 ThreadLocalRandom tlr = ThreadLocalRandom.current();
                 String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(10, 35) + "\", \"" + tlr.nextDouble(0, 100) + "\" ] }";

@@ -1,7 +1,6 @@
 package org.project.hlf.enroll;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
@@ -26,14 +25,13 @@ public class Enroll {
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();
-        HttpResponse httpResponse = response.returnResponse();
-        HttpEntity entity = httpResponse.getEntity();
+        HttpEntity entity = response.returnResponse().getEntity();
         if (entity != null) {
             String html = EntityUtils.toString(entity);
             JSONObject object = new JSONObject(html);
             String token = object.getString("token");
             ServerImpl.putToken(myRequest.port(), token);
-            return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / OBL));
+            return new MyResponse(html, ((double) (endTime - startTime) / OBL));
         }
         return null;
     }

@@ -15,7 +15,7 @@ import static org.project.hlf.supervisor.Supervisor.*;
 import static org.project.hlf.supervisor.SupervisorBenchmark.benchmarkSupervisorInvoke;
 import static org.project.hlf.supervisor.SupervisorBenchmark.benchmarkSupervisorQuery;
 
-public class Main {
+public class MainClient {
     public final static String ANSI_RESET = "\u001B[0m";
     public final static String ANSI_BLUE = "\u001B[34m";
     public final static String[] TYPOLOGY = {"rents", "bills", "deposits", "condominium fees"};

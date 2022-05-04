@@ -16,7 +16,7 @@ import static org.project.server.ServerImpl.OBL;
 
 public class Utils {
     @Contract("_ -> new")
-     public static @NotNull MyResponse execRequest(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse execRequest(@NotNull MyRequest myRequest) throws IOException {
         Request request = Request.Post(myRequest.request());
         request.bodyString(myRequest.body(), ContentType.APPLICATION_FORM_URLENCODED);
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");

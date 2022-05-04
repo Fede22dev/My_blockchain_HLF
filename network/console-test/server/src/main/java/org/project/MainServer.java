@@ -8,7 +8,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
-class Main {
+class MainServer {
     public static void main(String[] args) {
         try {
             LocateRegistry.createRegistry(Server.PORT);
