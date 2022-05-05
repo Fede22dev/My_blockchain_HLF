@@ -22,8 +22,4 @@ public class Enroll {
         System.out.println(myResponse.response());
         System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
-
-    public static void benchmarkEnroll() throws IOException, NotBoundException {
-        System.out.println(ServerReference.getServer().benchmarkEnroll());
-    }
 }

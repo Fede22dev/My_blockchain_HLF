@@ -40,7 +40,7 @@ class MainSensorBenchmarkQuery {
         request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
 
         startNewExecutor();
-        Thread.sleep(1000 * MINTEST);
+        Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);
 
         SensorQueryDataBenchmark.putTimes(args[0], times);

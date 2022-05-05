@@ -6,27 +6,27 @@ import org.project.models.MyResponse;
 
 import java.io.IOException;
 
-import static org.project.hlf.Utils.execRequest;
+import static org.project.hlf.Utils.executeRequest;
 
 public class Supervisor {
     public static @NotNull MyResponse payRent(@NotNull MyRequest myRequest) throws IOException {
-        return execRequest(myRequest);
+        return executeRequest(myRequest);
     }
 
     public static @NotNull MyResponse payDeposit(@NotNull MyRequest myRequest) throws IOException {
-        return execRequest(myRequest);
+        return executeRequest(myRequest);
     }
 
     public static @NotNull MyResponse payBill(@NotNull MyRequest myRequest) throws IOException {
-        return execRequest(myRequest);
+        return executeRequest(myRequest);
     }
 
     public static @NotNull MyResponse payCondominiumFees(@NotNull MyRequest myRequest) throws IOException {
-        return execRequest(myRequest);
+        return executeRequest(myRequest);
     }
 
     public static @NotNull MyResponse readAllPaymentType(@NotNull MyRequest myRequest) throws IOException {
-        return execRequest(myRequest);
+        return executeRequest(myRequest);
     }
 }
 

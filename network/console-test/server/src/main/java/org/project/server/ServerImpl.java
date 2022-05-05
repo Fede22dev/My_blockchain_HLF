@@ -28,14 +28,17 @@ import java.util.TimerTask;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
 
-    public final static String ANSI_RESET = "\u001B[0m";
     public final static String ANSI_BLUE = "\u001B[34m";
+    public static final String PURPLE = "\033[0;35m";
+    public final static String ANSI_RESET = "\u001B[0m";
     public final static long OBL = 1_000_000_000;
     //public final static String LANDLORDPORT = "8801";
     public final static String TENANTPORT = "8802";
     //public final static String GUESTPORT = "8803";
     public final static String SENSORPORT = "8804";
-    public final static long MINTEST = 30;
+    public final static long SECINSERTDATASENSOR = 45;
+    public final static long SECINITDELAYSENSOR = 15;
+    public final static long MINTESTBENCHMARK = 30;
     public final static long RATETESTMILLIS = 500; // 500 = 2 transaction per second
     private final static HashMap<String, String> TOKEN = new HashMap<>();
 
@@ -71,7 +74,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     HttpEntity entity = httpResponse.getEntity();
                     if (entity != null) {
                         String html = EntityUtils.toString(entity);
-                        System.out.println("\nENROLL TIMER " + port + ": " + html);
+                        System.out.println(PURPLE + "ENROLL TIMER " + port + ": " + html + ANSI_RESET);
                         JSONObject object = new JSONObject(html);
                         String tokenAdmin = object.getString("token");
                         putToken(port, tokenAdmin);

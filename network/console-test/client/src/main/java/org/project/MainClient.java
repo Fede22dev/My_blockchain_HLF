@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.rmi.NotBoundException;
 import java.text.ParseException;
 
-import static org.project.hlf.enroll.Enroll.benchmarkEnroll;
 import static org.project.hlf.enroll.Enroll.enroll;
+import static org.project.hlf.enroll.EnrollBenchmark.benchmarkEnroll;
 import static org.project.hlf.sensor.Sensor.readAllHouseData;
 import static org.project.hlf.sensor.SensorBenchmark.benchmarkSensorInvoke;
 import static org.project.hlf.sensor.SensorBenchmark.benchmarkSensorQuery;

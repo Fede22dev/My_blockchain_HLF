@@ -30,7 +30,7 @@ class MainSensorBenchmarkInvoke {
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
         startNewExecutor();
-        Thread.sleep(1000 * MINTEST);
+        Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);
 
         SensorInvokeDataBenchmark.putTimes(args[0], times);
