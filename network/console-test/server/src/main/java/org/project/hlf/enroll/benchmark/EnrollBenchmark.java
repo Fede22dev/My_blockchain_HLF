@@ -2,12 +2,12 @@ package org.project.hlf.enroll.benchmark;
 
 import com.opencsv.CSVWriter;
 import org.jetbrains.annotations.NotNull;
+import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 import static org.project.server.ServerImpl.MINTESTBENCHMARK;
 import static org.project.server.ServerImpl.RATETESTMILLIS;
@@ -28,19 +28,7 @@ public class EnrollBenchmark {
         writer.writeNext(new String[]{"enroll time 1", "enroll time 2", "enroll time 3"});
 
         HashMap<String, ArrayList<Double>> hashMap = EnrollDataBenchmark.getMultiListTimes();
-        int list0Length = hashMap.get("0").size();
-        int list1Length = hashMap.get("1").size();
-        int list2Length = hashMap.get("2").size();
-
-        int max = Stream.of(list0Length, list1Length, list2Length).max(Integer::compareTo).get();
-        for (int i = 0; i < max; i++) {
-            writer.writeNext(new String[]{String.valueOf(i >= list0Length ? "" : hashMap.get("0").get(i)).replace(".", ","),
-                    String.valueOf(i >= list1Length ? "" : hashMap.get("1").get(i)).replace(".", ","),
-                    String.valueOf(i >= list2Length ? "" : hashMap.get("2").get(i)).replace(".", ",")}
-            );
-        }
-
-        writer.close();
+        Utils.writeCSV(writer, hashMap);
         EnrollDataBenchmark.clear();
 
         return "BENCHMARK ENROLL ESEGUITO";

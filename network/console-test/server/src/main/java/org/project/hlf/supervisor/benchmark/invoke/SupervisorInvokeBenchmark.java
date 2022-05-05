@@ -2,24 +2,33 @@ package org.project.hlf.supervisor.benchmark.invoke;
 
 import com.opencsv.CSVWriter;
 import org.jetbrains.annotations.NotNull;
+import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.project.server.ServerImpl.MINTESTBENCHMARK;
+import static org.project.server.ServerImpl.RATETESTMILLIS;
 
 public class SupervisorInvokeBenchmark {
+    private static final ThreadTestSupervisorBenchmarkInvoke[] threads = new ThreadTestSupervisorBenchmarkInvoke[3];
+
     public static @NotNull String benchmarkSupervisorInvoke() throws InterruptedException, IOException {
         for (int i = 0; i < 3; i++) {
-            MainSupervisorBenchmarkInvoke.main(new String[]{String.valueOf(i + 1)});
+            threads[i] = new ThreadTestSupervisorBenchmarkInvoke(String.valueOf(i));
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_invoke.csv"));
-        writer.writeNext(new String[]{"invoke supervisor time"});
+        for (int i = 0; i < 3; i++) {
+            threads[i].join();
+        }
 
-        SupervisorInvokeDataBenchmark.getMultiListTimes().forEach(time ->
-                writer.writeNext(new String[]{String.valueOf(time).replace(".", ",")})
-        );
+        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_invoke_" + "rate" + RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
+        writer.writeNext(new String[]{"invoke time 1", "invoke time 2", "invoke time 3"});
 
-        writer.close();
+        HashMap<String, ArrayList<Double>> hashMap = SupervisorInvokeDataBenchmark.getMultiListTimes();
+        Utils.writeCSV(writer, hashMap);
         SupervisorInvokeDataBenchmark.clear();
 
         return "BENCHMARK SUPERVISOR INVOKE ESEGUITO";

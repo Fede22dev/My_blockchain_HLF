@@ -8,12 +8,8 @@ import java.util.HashMap;
 class SupervisorQueryDataBenchmark {
     private static final HashMap<String, ArrayList<Double>> multiListTimesSupervisorQuery = new HashMap<>(3);
 
-    static synchronized @NotNull ArrayList<Double> getMultiListTimes() {
-        ArrayList<Double> totals = new ArrayList<>();
-        multiListTimesSupervisorQuery.forEach((key, value) ->
-                totals.addAll(value)
-        );
-        return totals;
+    static synchronized HashMap<String, ArrayList<Double>> getMultiListTimes() {
+        return multiListTimesSupervisorQuery;
     }
 
     static synchronized void putTimes(String key, @NotNull ArrayList<Double> times) {

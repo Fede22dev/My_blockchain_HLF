@@ -2,24 +2,34 @@ package org.project.hlf.sensor.benchmark.invoke;
 
 import com.opencsv.CSVWriter;
 import org.jetbrains.annotations.NotNull;
+import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static org.project.server.ServerImpl.MINTESTBENCHMARK;
+import static org.project.server.ServerImpl.RATETESTMILLIS;
 
 public class SensorInvokeBenchmark {
+    private static final ThreadTestSensorBenchmarkInvoke[] threads = new ThreadTestSensorBenchmarkInvoke[3];
+
+
     public static @NotNull String benchmarkSensorInvoke() throws IOException, InterruptedException {
         for (int i = 0; i < 3; i++) {
-            MainSensorBenchmarkInvoke.main(new String[]{String.valueOf(i + 1)});
+            threads[i] = new ThreadTestSensorBenchmarkInvoke(String.valueOf(i));
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_sensor_invoke.csv"));
-        writer.writeNext(new String[]{"invoke sensor time"});
+        for (int i = 0; i < 3; i++) {
+            threads[i].join();
+        }
 
-        SensorInvokeDataBenchmark.getMultiListTimes().forEach(time ->
-                writer.writeNext(new String[]{String.valueOf(time).replace(".", ",")})
-        );
+        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_sensor_invoke_" + "rate" + RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
+        writer.writeNext(new String[]{"invoke time 1", "invoke time 2", "invoke time 3"});
 
-        writer.close();
+        HashMap<String, ArrayList<Double>> hashMap = SensorInvokeDataBenchmark.getMultiListTimes();
+        Utils.writeCSV(writer, hashMap);
         SensorInvokeDataBenchmark.clear();
 
         return "BENCHMARK SENSOR INVOKE ESEGUITO";

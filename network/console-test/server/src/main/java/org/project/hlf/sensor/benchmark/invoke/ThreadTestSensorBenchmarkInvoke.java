@@ -1,30 +1,29 @@
-package org.project.hlf.enroll.benchmark;
+package org.project.hlf.sensor.benchmark.invoke;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
+import org.project.hlf.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static org.project.server.ServerImpl.*;
 
-class ThreadTestEnrollBenchmark extends Thread {
+class ThreadTestSensorBenchmarkInvoke extends Thread {
     private final String key;
     private final Request request;
     private final ScheduledExecutorService executor;
     private final ArrayList<Double> times;
     private ScheduledFuture<?> future;
 
-    ThreadTestEnrollBenchmark(String key) {
+    ThreadTestSensorBenchmarkInvoke(String key) {
         this.key = key;
-        request = Request.Post("http://localhost:" + TENANTPORT + "/user/enroll");
+        request = Request.Post("http://localhost:" + SENSORPORT + "/invoke/home1/chaincode1");
         executor = Executors.newScheduledThreadPool(5);
         times = new ArrayList<>();
         start();
@@ -40,8 +39,6 @@ class ThreadTestEnrollBenchmark extends Thread {
     }
 
     private void test() throws InterruptedException {
-        String body = "{\"id\": \"admin\", \"secret\": \"adminpw\"}";
-        request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
         request.setHeader("Authorization", "Bearer");
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
@@ -49,21 +46,16 @@ class ThreadTestEnrollBenchmark extends Thread {
         Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);
 
-        EnrollDataBenchmark.putTimes(key, times);
+        SensorInvokeDataBenchmark.putTimes(key, times);
     }
 
     private void startNewExecutor() {
         future = executor.scheduleAtFixedRate(() -> {
             try {
-                long startTime = System.nanoTime();
-                Response response = request.execute();
-                long endTime = System.nanoTime();
-                HttpEntity entity = response.returnResponse().getEntity();
-                if (entity != null) {
-                    double time = (double) (endTime - startTime) / OBL;
-                    System.out.println("ENROLL: " + key + " " + EntityUtils.toString(entity) + " " + time);
-                    times.add(time);
-                }
+                ThreadLocalRandom tlr = ThreadLocalRandom.current();
+                String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(10, 35) + "\", \"" + tlr.nextDouble(0, 100) + "\" ] }";
+                request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
+                Utils.execRequestInvokeBenchmark(request, key, times);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

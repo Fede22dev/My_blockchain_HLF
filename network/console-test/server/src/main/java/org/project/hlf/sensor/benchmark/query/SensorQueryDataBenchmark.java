@@ -8,12 +8,8 @@ import java.util.HashMap;
 class SensorQueryDataBenchmark {
     private static final HashMap<String, ArrayList<Double>> multiListTimesSensorQuery = new HashMap<>(3);
 
-    static synchronized @NotNull ArrayList<Double> getMultiListTimes() {
-        ArrayList<Double> totals = new ArrayList<>();
-        multiListTimesSensorQuery.forEach((key, value) ->
-                totals.addAll(value)
-        );
-        return totals;
+    static synchronized HashMap<String, ArrayList<Double>> getMultiListTimes() {
+        return multiListTimesSensorQuery;
     }
 
     static synchronized void putTimes(String key, @NotNull ArrayList<Double> times) {
