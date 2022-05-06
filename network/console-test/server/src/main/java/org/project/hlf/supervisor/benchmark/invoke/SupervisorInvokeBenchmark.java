@@ -6,8 +6,8 @@ import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.project.server.ServerImpl.MINTESTBENCHMARK;
 import static org.project.server.ServerImpl.RATETESTMILLIS;
@@ -24,10 +24,10 @@ public class SupervisorInvokeBenchmark {
             threads[i].join();
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_invoke_" + "rate" + RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_invoke_" + "rate" + 1000 / RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
         writer.writeNext(new String[]{"invoke time 1", "invoke time 2", "invoke time 3"});
 
-        HashMap<String, ArrayList<Double>> hashMap = SupervisorInvokeDataBenchmark.getMultiListTimes();
+        HashMap<String, List<Double>> hashMap = SupervisorInvokeDataBenchmark.getMultiListTimes();
         Utils.writeCSV(writer, hashMap);
         SupervisorInvokeDataBenchmark.clear();
 

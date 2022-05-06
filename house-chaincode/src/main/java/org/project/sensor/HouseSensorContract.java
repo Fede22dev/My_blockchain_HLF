@@ -2,18 +2,14 @@ package org.project.sensor;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.Contact;
-import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Default;
-import org.hyperledger.fabric.contract.annotation.Info;
-import org.hyperledger.fabric.contract.annotation.License;
-import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -111,7 +107,7 @@ public class HouseSensorContract implements ContractInterface {
     public String readAllHouseWeather(@NotNull Context ctx, long startMillis, long endMillis) {
         if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             QueryResultsIterator<KeyValue> results = ctx.getStub().getStateByRange("WEATHER" + startMillis, "WEATHER" + endMillis);
-            ArrayList<String> queryResults = new ArrayList<>();
+            List<String> queryResults = new ArrayList<>();
             for (KeyValue result : results) {
                 queryResults.add(result.getKey() + ":" + result.getStringValue());
             }
@@ -135,7 +131,7 @@ public class HouseSensorContract implements ContractInterface {
     public String readAllHouseElectricity(@NotNull Context ctx, long startMillis, long endMillis) {
         if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             QueryResultsIterator<KeyValue> results = ctx.getStub().getStateByRange("ELECTRICITY" + startMillis, "ELECTRICITY" + endMillis);
-            ArrayList<String> queryResults = new ArrayList<>();
+            List<String> queryResults = new ArrayList<>();
             for (KeyValue result : results) {
                 queryResults.add(result.getKey() + ":" + result.getStringValue());
             }

@@ -38,8 +38,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public final static String SENSORPORT = "8804";
     public final static long SECINSERTDATASENSOR = 45;
     public final static long SECINITDELAYSENSOR = 15;
-    public final static long MINTESTBENCHMARK = 30;
-    public final static long RATETESTMILLIS = 500; // 500 = 2 transaction per second
+    public final static long MINTESTBENCHMARK = 60 * 2;
+    public final static long RATETESTMILLIS = 250; // 500 = 2 transaction per second
     private final static HashMap<String, String> TOKEN = new HashMap<>();
 
     public ServerImpl() throws RemoteException {

@@ -8,12 +8,9 @@ import org.apache.http.util.EntityUtils;
 import org.project.server.ServerImpl;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -25,7 +22,7 @@ class ThreadTestSupervisorBenchmarkQuery extends Thread {
     private final String key;
     private final Request request;
     private final ScheduledExecutorService executor;
-    private final ArrayList<Double> times;
+    private final List<Double> times;
     private ScheduledFuture<?> future;
 
     ThreadTestSupervisorBenchmarkQuery(String key) {

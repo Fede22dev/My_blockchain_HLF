@@ -6,11 +6,8 @@ import org.project.hlf.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.concurrent.*;
 
 import static org.project.server.ServerImpl.*;
 
@@ -18,7 +15,7 @@ class ThreadTestSensorBenchmarkInvoke extends Thread {
     private final String key;
     private final Request request;
     private final ScheduledExecutorService executor;
-    private final ArrayList<Double> times;
+    private final List<Double> times;
     private ScheduledFuture<?> future;
 
     ThreadTestSensorBenchmarkInvoke(String key) {
@@ -39,9 +36,6 @@ class ThreadTestSensorBenchmarkInvoke extends Thread {
     }
 
     private void test() throws InterruptedException {
-        request.setHeader("Authorization", "Bearer");
-        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-
         startNewExecutor();
         Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);

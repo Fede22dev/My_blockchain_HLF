@@ -6,8 +6,8 @@ import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.project.server.ServerImpl.MINTESTBENCHMARK;
 import static org.project.server.ServerImpl.RATETESTMILLIS;
@@ -24,10 +24,10 @@ public class EnrollBenchmark {
             threads[i].join();
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_enroll_" + "rate" + RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_enroll_" + "rate" + 1000 / RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
         writer.writeNext(new String[]{"enroll time 1", "enroll time 2", "enroll time 3"});
 
-        HashMap<String, ArrayList<Double>> hashMap = EnrollDataBenchmark.getMultiListTimes();
+        HashMap<String, List<Double>> hashMap = EnrollDataBenchmark.getMultiListTimes();
         Utils.writeCSV(writer, hashMap);
         EnrollDataBenchmark.clear();
 

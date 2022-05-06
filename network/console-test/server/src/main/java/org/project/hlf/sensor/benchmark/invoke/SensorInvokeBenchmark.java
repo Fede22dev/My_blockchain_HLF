@@ -6,8 +6,8 @@ import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.project.server.ServerImpl.MINTESTBENCHMARK;
 import static org.project.server.ServerImpl.RATETESTMILLIS;
@@ -25,10 +25,10 @@ public class SensorInvokeBenchmark {
             threads[i].join();
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_sensor_invoke_" + "rate" + RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_sensor_invoke_" + "rate" + 1000 / RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
         writer.writeNext(new String[]{"invoke time 1", "invoke time 2", "invoke time 3"});
 
-        HashMap<String, ArrayList<Double>> hashMap = SensorInvokeDataBenchmark.getMultiListTimes();
+        HashMap<String, List<Double>> hashMap = SensorInvokeDataBenchmark.getMultiListTimes();
         Utils.writeCSV(writer, hashMap);
         SensorInvokeDataBenchmark.clear();
 

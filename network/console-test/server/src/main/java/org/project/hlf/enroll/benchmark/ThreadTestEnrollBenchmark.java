@@ -8,6 +8,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -19,7 +20,7 @@ class ThreadTestEnrollBenchmark extends Thread {
     private final String key;
     private final Request request;
     private final ScheduledExecutorService executor;
-    private final ArrayList<Double> times;
+    private final List<Double> times;
     private ScheduledFuture<?> future;
 
     ThreadTestEnrollBenchmark(String key) {

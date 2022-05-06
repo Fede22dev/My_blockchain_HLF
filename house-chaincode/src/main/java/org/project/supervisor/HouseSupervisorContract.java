@@ -2,12 +2,7 @@ package org.project.supervisor;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.Contact;
-import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Default;
-import org.hyperledger.fabric.contract.annotation.Info;
-import org.hyperledger.fabric.contract.annotation.License;
-import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
@@ -16,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -234,7 +230,7 @@ public class HouseSupervisorContract implements ContractInterface {
                 return "The inserted type is not accepted";
         }
 
-        ArrayList<String> queryResults = new ArrayList<>();
+        List<String> queryResults = new ArrayList<>();
         for (KeyValue result : results) {
             queryResults.add(result.getKey() + ":" + result.getStringValue());
         }
@@ -261,7 +257,7 @@ public class HouseSupervisorContract implements ContractInterface {
     public String queryBenchmark(@NotNull Context ctx, long startMillis, long endMillis) {
         QueryResultsIterator<KeyValue> results = ctx.getStub().getStateByRange("BENCH" + startMillis, "BENCH" + endMillis);
 
-        ArrayList<String> queryResults = new ArrayList<>();
+        List<String> queryResults = new ArrayList<>();
         for (KeyValue result : results) {
             queryResults.add(result.getKey() + ":" + result.getStringValue());
         }
