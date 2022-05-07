@@ -55,6 +55,7 @@ class ThreadTestSupervisorBenchmarkQuery extends Thread {
         startNewExecutor();
         Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);
+        executor.shutdown();
 
         SupervisorQueryDataBenchmark.putTimes(key, times);
     }
@@ -68,7 +69,7 @@ class ThreadTestSupervisorBenchmarkQuery extends Thread {
                 HttpEntity entity = response.returnResponse().getEntity();
                 if (entity != null) {
                     double time = (double) (endTime - startTime) / OBL;
-                    System.out.println("QUERY: " + key + " " + EntityUtils.toString(entity) + " " + time);
+                    System.out.println("QUERY: " + key + " -> " + Thread.currentThread().getName() + " -> " + executor + " -> " + EntityUtils.toString(entity) + " -> " + time);
                     times.add(time);
                 }
             } catch (IOException e) {

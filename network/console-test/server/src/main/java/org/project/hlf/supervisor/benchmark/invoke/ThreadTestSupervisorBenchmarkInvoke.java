@@ -48,6 +48,7 @@ class ThreadTestSupervisorBenchmarkInvoke extends Thread {
         startNewExecutor();
         Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);
+        executor.shutdown();
 
         SupervisorInvokeDataBenchmark.putTimes(key, times);
     }
@@ -55,7 +56,7 @@ class ThreadTestSupervisorBenchmarkInvoke extends Thread {
     private void startNewExecutor() {
         future = executor.scheduleAtFixedRate(() -> {
             try {
-                Utils.execRequestInvokeBenchmark(request, key, times);
+                Utils.execRequestInvokeBenchmark(request, key, executor, times);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

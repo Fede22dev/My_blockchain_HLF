@@ -12,8 +12,9 @@ import org.project.models.MyResponse;
 import org.project.server.ServerImpl;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Stream;
 
 import static org.project.server.ServerImpl.OBL;
@@ -30,19 +31,19 @@ public class Utils {
         return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / OBL));
     }
 
-    public static void execRequestInvokeBenchmark(@NotNull Request request, String key, List<Double> times) throws IOException {
+    public static void execRequestInvokeBenchmark(@NotNull Request request, String key, ScheduledExecutorService executor, List<Double> times) throws IOException {
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();
         HttpEntity entity = response.returnResponse().getEntity();
         if (entity != null) {
             double time = (double) (endTime - startTime) / OBL;
-            System.out.println("INVOKE: " + key + " " + EntityUtils.toString(entity) + " " + time);
+            System.out.println("INVOKE: " + key + " -> " + Thread.currentThread().getName() + " -> " + executor + " -> " + EntityUtils.toString(entity) + " -> " + time);
             times.add(time);
         }
     }
 
-    public static void writeCSV(CSVWriter writer, @NotNull HashMap<String, List<Double>> hashMap) throws IOException {
+    public static void writeCSV(CSVWriter writer, @NotNull Map<String, List<Double>> hashMap) throws IOException {
         int list0Length = hashMap.get("0").size();
         int list1Length = hashMap.get("1").size();
         int list2Length = hashMap.get("2").size();

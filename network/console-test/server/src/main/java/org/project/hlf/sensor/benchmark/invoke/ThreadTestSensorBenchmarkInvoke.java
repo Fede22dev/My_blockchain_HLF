@@ -39,6 +39,7 @@ class ThreadTestSensorBenchmarkInvoke extends Thread {
         startNewExecutor();
         Thread.sleep(1000 * MINTESTBENCHMARK);
         future.cancel(false);
+        executor.shutdown();
 
         SensorInvokeDataBenchmark.putTimes(key, times);
     }
@@ -49,7 +50,7 @@ class ThreadTestSensorBenchmarkInvoke extends Thread {
                 ThreadLocalRandom tlr = ThreadLocalRandom.current();
                 String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(10, 35) + "\", \"" + tlr.nextDouble(0, 100) + "\" ] }";
                 request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-                Utils.execRequestInvokeBenchmark(request, key, times);
+                Utils.execRequestInvokeBenchmark(request, key, executor, times);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

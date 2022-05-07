@@ -6,8 +6,8 @@ import org.project.hlf.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.project.server.ServerImpl.MINTESTBENCHMARK;
 import static org.project.server.ServerImpl.RATETESTMILLIS;
@@ -27,7 +27,7 @@ public class SupervisorQueryBenchmark {
         CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_query_" + "rate" + 1000 / RATETESTMILLIS + "_dur" + MINTESTBENCHMARK + ".csv"));
         writer.writeNext(new String[]{"query time 1", "query time 2", "query time 3"});
 
-        HashMap<String, List<Double>> hashMap = SupervisorQueryDataBenchmark.getMultiListTimes();
+        Map<String, List<Double>> hashMap = SupervisorQueryDataBenchmark.getMultiListTimes();
         Utils.writeCSV(writer, hashMap);
         SupervisorQueryDataBenchmark.clear();
 

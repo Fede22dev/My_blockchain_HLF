@@ -31,15 +31,21 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public final static String ANSI_BLUE = "\u001B[34m";
     public static final String PURPLE = "\033[0;35m";
     public final static String ANSI_RESET = "\u001B[0m";
+
     public final static long OBL = 1_000_000_000;
+
     //public final static String LANDLORDPORT = "8801";
     public final static String TENANTPORT = "8802";
     //public final static String GUESTPORT = "8803";
     public final static String SENSORPORT = "8804";
-    public final static long SECINSERTDATASENSOR = 45;
+
+    public final static long SECINSERTDATASENSOR = 60 * 5;
     public final static long SECINITDELAYSENSOR = 15;
+
     public final static long MINTESTBENCHMARK = 60 * 2;
     public final static long RATETESTMILLIS = 250; // 500 = 2 transaction per second
+
+    private final static long MINTIMERENROLL = 60 * 9;
     private final static HashMap<String, String> TOKEN = new HashMap<>();
 
     public ServerImpl() throws RemoteException {
@@ -83,7 +89,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     e.printStackTrace();
                 }
             }
-        }, 0, 1000 * 60 * 8);
+        }, 0, 1000 * MINTIMERENROLL);
     }
 
     @Override

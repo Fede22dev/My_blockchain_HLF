@@ -4,11 +4,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class SensorQueryDataBenchmark {
-    private static final HashMap<String, List<Double>> multiListTimesSensorQuery = new HashMap<>(3);
+    private static final Map<String, List<Double>> multiListTimesSensorQuery = new HashMap<>(3);
 
-    static synchronized HashMap<String, List<Double>> getMultiListTimes() {
+    static synchronized Map<String, List<Double>> getMultiListTimes() {
         return multiListTimesSensorQuery;
     }
 
