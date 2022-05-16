@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 class SensorQueryDataBenchmark {
-    private static final Map<String, List<Double>> multiListTimesSensorQuery = new HashMap<>(3);
+    private static final Map<String, List<Double>> MULTI_LIST_TIMES_SENSOR_QUERY = new HashMap<>(3);
 
     static synchronized Map<String, List<Double>> getMultiListTimes() {
-        return multiListTimesSensorQuery;
+        return MULTI_LIST_TIMES_SENSOR_QUERY;
     }
 
-    static synchronized void putTimes(String key, @NotNull List<Double> times) {
-        multiListTimesSensorQuery.put(key, times);
+    static synchronized void putTimes(final String key, @NotNull final List<Double> times) {
+        MULTI_LIST_TIMES_SENSOR_QUERY.put(key, times);
     }
 
     static synchronized void clear() {
-        multiListTimesSensorQuery.clear();
+        MULTI_LIST_TIMES_SENSOR_QUERY.clear();
     }
 }

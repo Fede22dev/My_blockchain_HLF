@@ -1,31 +1,27 @@
-package org.project.hlf.supervisor.benchmark.invoke;
+package org.project.hlf.sensor.benchmark.invoke;
 
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.project.hlf.Utils;
-import org.project.server.ServerImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
-import static org.project.server.ServerImpl.*;
+import static org.project.ServerConstants.*;
 
-class ThreadTestSupervisorBenchmarkInvoke extends Thread {
+class ThreadSensorBenchmarkInvoke extends Thread {
     private final String key;
     private final Request request;
     private final ScheduledExecutorService executor;
     private final List<Double> times;
     private ScheduledFuture<?> future;
 
-    ThreadTestSupervisorBenchmarkInvoke(String key) {
+    ThreadSensorBenchmarkInvoke(final String key) {
         this.key = key;
-        request = Request.Post("http://localhost:" + TENANTPORT + "/invoke/home1/chaincode1");
-        executor = Executors.newScheduledThreadPool(5);
+        request = Request.Post("http://localhost:" + SENSOR_PORT + "/invoke/home1/chaincode1");
+        executor = Executors.newScheduledThreadPool(SIZE_THREAD_POOL);
         times = new ArrayList<>();
         start();
     }
@@ -40,26 +36,24 @@ class ThreadTestSupervisorBenchmarkInvoke extends Thread {
     }
 
     private void test() throws InterruptedException {
-        request.setHeader("Authorization", "Bearer " + ServerImpl.getToken(TENANTPORT));
-        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-        String body = "{ \"method\": \"HouseSupervisorContract:invokeBenchmark\", \"args\": [] }";
-        request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-
         startNewExecutor();
-        Thread.sleep(1000 * MINTESTBENCHMARK);
+        Thread.sleep(ONE_THOUSAND * SECONDS_DURATION_BENCHMARK);
         future.cancel(false);
         executor.shutdown();
 
-        SupervisorInvokeDataBenchmark.putTimes(key, times);
+        SensorInvokeDataBenchmark.putTimes(key, times);
     }
 
     private void startNewExecutor() {
         future = executor.scheduleAtFixedRate(() -> {
             try {
+                ThreadLocalRandom tlr = ThreadLocalRandom.current();
+                String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(MIN_TEMPERATURE, MAX_TEMPERATURE) + "\", \"" + tlr.nextDouble(MIN_HUMIDITY, MAX_HUMIDITY) + "\" ] }";
+                request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
                 Utils.execRequestInvokeBenchmark(request, key, executor, times);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }, 0, RATETESTMILLIS, TimeUnit.MILLISECONDS);
+        }, 0, MILLIS_RATE_REQUEST_BENCHMARK, TimeUnit.MILLISECONDS);
     }
 }

@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 class EnrollDataBenchmark {
-    private static final Map<String, List<Double>> multiListTimesEnroll = new HashMap<>(3);
+    private static final Map<String, List<Double>> MULTI_LIST_TIMES_ENROLL = new HashMap<>(3);
 
     static synchronized Map<String, List<Double>> getMultiListTimes() {
-        return multiListTimesEnroll;
+        return MULTI_LIST_TIMES_ENROLL;
     }
 
-    static synchronized void putTimes(String key, @NotNull List<Double> times) {
-        multiListTimesEnroll.put(key, times);
+    static synchronized void putTimes(final String key, @NotNull final List<Double> times) {
+        MULTI_LIST_TIMES_ENROLL.put(key, times);
     }
 
     static synchronized void clear() {
-        multiListTimesEnroll.clear();
+        MULTI_LIST_TIMES_ENROLL.clear();
     }
 }

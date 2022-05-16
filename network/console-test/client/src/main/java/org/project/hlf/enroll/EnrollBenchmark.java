@@ -1,12 +1,11 @@
 package org.project.hlf.enroll;
 
-import org.project.server.ServerReference;
+import org.project.server.ServerInstance;
 
 import java.io.IOException;
-import java.rmi.NotBoundException;
 
 public class EnrollBenchmark {
-    public static void benchmarkEnroll() throws IOException, NotBoundException {
-        System.out.println(ServerReference.getServer().benchmarkEnroll());
+    public static void benchmarkEnroll() throws IOException {
+        System.out.println(ServerInstance.getInstance().benchmarkEnroll());
     }
 }

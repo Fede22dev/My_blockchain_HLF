@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 class SensorInvokeDataBenchmark {
-    private static final Map<String, List<Double>> multiListTimesSensorInvoke = new HashMap<>(3);
+    private static final Map<String, List<Double>> MULTI_LIST_TIMES_SENSOR_INVOKE = new HashMap<>(3);
 
     static synchronized Map<String, List<Double>> getMultiListTimes() {
-        return multiListTimesSensorInvoke;
+        return MULTI_LIST_TIMES_SENSOR_INVOKE;
     }
 
-    static synchronized void putTimes(String key, @NotNull List<Double> times) {
-        multiListTimesSensorInvoke.put(key, times);
+    static synchronized void putTimes(final String key, @NotNull final List<Double> times) {
+        MULTI_LIST_TIMES_SENSOR_INVOKE.put(key, times);
     }
 
     static synchronized void clear() {
-        multiListTimesSensorInvoke.clear();
+        MULTI_LIST_TIMES_SENSOR_INVOKE.clear();
     }
 }

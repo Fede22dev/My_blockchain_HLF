@@ -1,16 +1,15 @@
 package org.project.hlf.sensor;
 
-import org.project.server.ServerReference;
+import org.project.server.ServerInstance;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class SensorBenchmark {
-    public static void benchmarkSensorQuery() throws NotBoundException, RemoteException {
-        System.out.println(ServerReference.getServer().benchmarkSensorQuery());
+    public static void benchmarkSensorQuery() throws RemoteException {
+        System.out.println(ServerInstance.getInstance().benchmarkSensorQuery());
     }
 
-    public static void benchmarkSensorInvoke() throws NotBoundException, RemoteException {
-        System.out.println(ServerReference.getServer().benchmarkSensorInvoke());
+    public static void benchmarkSensorInvoke() throws RemoteException {
+        System.out.println(ServerInstance.getInstance().benchmarkSensorInvoke());
     }
 }

@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 class SupervisorQueryDataBenchmark {
-    private static final Map<String, List<Double>> multiListTimesSupervisorQuery = new HashMap<>(3);
+    private static final Map<String, List<Double>> MULTI_LIST_TIMES_SUPERVISOR_QUERY = new HashMap<>(3);
 
     static synchronized Map<String, List<Double>> getMultiListTimes() {
-        return multiListTimesSupervisorQuery;
+        return MULTI_LIST_TIMES_SUPERVISOR_QUERY;
     }
 
-    static synchronized void putTimes(String key, @NotNull List<Double> times) {
-        multiListTimesSupervisorQuery.put(key, times);
+    static synchronized void putTimes(final String key, @NotNull final List<Double> times) {
+        MULTI_LIST_TIMES_SUPERVISOR_QUERY.put(key, times);
     }
 
     static synchronized void clear() {
-        multiListTimesSupervisorQuery.clear();
+        MULTI_LIST_TIMES_SUPERVISOR_QUERY.clear();
     }
 }

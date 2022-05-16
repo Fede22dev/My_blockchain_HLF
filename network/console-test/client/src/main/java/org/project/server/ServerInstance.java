@@ -7,23 +7,23 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-public class ServerReference {
+public class ServerInstance {
 
     private static Server server = null;
 
-    private static void initializeServer() throws RemoteException, NotBoundException {
+    private static void init() {
         if (server == null) {
             try {
                 server = (Server) Naming.lookup("rmi://localhost:" + Server.PORT + "/" + Server.NAME);
                 System.out.println("SERVER CONNESSO");
-            } catch (MalformedURLException e) {
+            } catch (MalformedURLException | NotBoundException | RemoteException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static Server getServer() throws NotBoundException, RemoteException {
-        initializeServer();
+    public static Server getInstance() {
+        init();
         return server;
     }
 }

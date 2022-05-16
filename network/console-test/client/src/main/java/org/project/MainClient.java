@@ -1,43 +1,34 @@
 package org.project;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.rmi.NotBoundException;
-import java.text.ParseException;
+import org.project.hlf.enroll.Enroll;
+import org.project.hlf.enroll.EnrollBenchmark;
+import org.project.hlf.sensor.Sensor;
+import org.project.hlf.sensor.SensorBenchmark;
+import org.project.hlf.supervisor.Supervisor;
+import org.project.hlf.supervisor.SupervisorBenchmark;
 
-import static org.project.hlf.enroll.Enroll.enroll;
-import static org.project.hlf.enroll.EnrollBenchmark.benchmarkEnroll;
-import static org.project.hlf.sensor.Sensor.readAllHouseData;
-import static org.project.hlf.sensor.SensorBenchmark.benchmarkSensorInvoke;
-import static org.project.hlf.sensor.SensorBenchmark.benchmarkSensorQuery;
-import static org.project.hlf.supervisor.Supervisor.*;
-import static org.project.hlf.supervisor.SupervisorBenchmark.benchmarkSupervisorInvoke;
-import static org.project.hlf.supervisor.SupervisorBenchmark.benchmarkSupervisorQuery;
+import java.io.IOException;
+
+import static org.project.ClientConstants.CONSOLE;
 
 public class MainClient {
-    public final static String ANSI_RESET = "\u001B[0m";
-    public final static String ANSI_BLUE = "\u001B[34m";
-    public final static String[] TYPOLOGY = {"rents", "bills", "deposits", "condominium fees"};
-    public final static BufferedReader CONSOLE = new BufferedReader(new InputStreamReader(System.in));
-    public final static String TENANTPORT = "8802";
-
-    public static void main(String[] args) throws IOException, NotBoundException, ParseException {
+    public static void main(final String[] args) throws IOException {
         while (true) {
             System.out.print("Command --> [1 = enroll] [2 = invoke supervisor] [3 = query supervisor] [4 = performance] [5 = query house data] [6 = stop]: ");
             switch (CONSOLE.readLine().strip()) {
-                case "1" -> enroll();
+                case "1" -> Enroll.enroll();
 
                 case "2" -> {
                     boolean goInvoke = true;
                     while (goInvoke) {
                         System.out.print("Method --> [1 = payRent] [2 = payDeposit] [3 = payBill] [4 = payCondominiumFees] [5 = stop invoke]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> payRent();
-                            case "2" -> payDeposit();
-                            case "3" -> payBill();
-                            case "4" -> payCondominiumFees();
+                            case "1" -> Supervisor.payRent();
+                            case "2" -> Supervisor.payDeposit();
+                            case "3" -> Supervisor.payBill();
+                            case "4" -> Supervisor.payCondominiumFees();
                             case "5" -> goInvoke = false;
+                            default -> System.out.println("Command not recognized");
                         }
                     }
                 }
@@ -47,8 +38,9 @@ public class MainClient {
                     while (goQuery) {
                         System.out.print("Method --> [1 = readAllPaymentType] [2 = stop query]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> readAllPaymentType();
+                            case "1" -> Supervisor.readAllPaymentType();
                             case "2" -> goQuery = false;
+                            default -> System.out.println("Command not recognized");
                         }
                     }
                 }
@@ -58,12 +50,13 @@ public class MainClient {
                     while (goPerformance) {
                         System.out.print("Method --> [1 = bench enroll] [2 = bench supervisor invoke] [3 = bench supervisor query] [4 = bench sensor invoke] [5 = bench sensor query] [6 = stop bench]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> benchmarkEnroll();
-                            case "2" -> benchmarkSupervisorInvoke();
-                            case "3" -> benchmarkSupervisorQuery();
-                            case "4" -> benchmarkSensorInvoke();
-                            case "5" -> benchmarkSensorQuery();
+                            case "1" -> EnrollBenchmark.benchmarkEnroll();
+                            case "2" -> SupervisorBenchmark.benchmarkSupervisorInvoke();
+                            case "3" -> SupervisorBenchmark.benchmarkSupervisorQuery();
+                            case "4" -> SensorBenchmark.benchmarkSensorInvoke();
+                            case "5" -> SensorBenchmark.benchmarkSensorQuery();
                             case "6" -> goPerformance = false;
+                            default -> System.out.println("Command not recognized");
                         }
                     }
                 }
@@ -73,14 +66,17 @@ public class MainClient {
                     while (goQuery) {
                         System.out.print("Method --> [1 = read electricity data] [2 = read weather data] [3 = stop query]: ");
                         switch (CONSOLE.readLine().strip()) {
-                            case "1" -> readAllHouseData(false);
-                            case "2" -> readAllHouseData(true);
+                            case "1" -> Sensor.readAllHouseData(false);
+                            case "2" -> Sensor.readAllHouseData(true);
                             case "3" -> goQuery = false;
+                            default -> System.out.println("Command not recognized");
                         }
                     }
                 }
 
                 case "6" -> System.exit(0);
+
+                default -> System.out.println("Command not recognized");
             }
         }
     }

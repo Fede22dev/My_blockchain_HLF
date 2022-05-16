@@ -8,68 +8,68 @@ import org.apache.http.util.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import org.project.models.MyRequest;
 import org.project.models.MyResponse;
-import org.project.server.ServerImpl;
+import org.project.server.TokenManager;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+import static org.project.ServerConstants.*;
 import static org.project.hlf.Utils.executeRequest;
-import static org.project.server.ServerImpl.*;
 
 public class Sensor {
     public static void startWeatherSensor() {
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
-        Request request = Request.Post("http://localhost:" + SENSORPORT + "/invoke/home1/chaincode1");
+        Request request = Request.Post("http://localhost:" + SENSOR_PORT + "/invoke/home1/chaincode1");
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
         Executors.newSingleThreadScheduledExecutor()
                 .scheduleAtFixedRate(() -> {
                     try {
-                        request.setHeader("Authorization", "Bearer " + ServerImpl.getToken(SENSORPORT));
-                        String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(10, 35) + "\", \"" + tlr.nextDouble(0, 100) + "\" ] }";
+                        request.setHeader("Authorization", "Bearer " + TokenManager.getToken(SENSOR_PORT));
+                        String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(MIN_TEMPERATURE, MAX_TEMPERATURE) + "\", \"" + tlr.nextDouble(MIN_HUMIDITY, MAX_HUMIDITY) + "\" ] }";
                         request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
                         executeRequestInsertDataSensor(request);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }, SECINITDELAYSENSOR, SECINSERTDATASENSOR, TimeUnit.SECONDS);
+                }, SECONDS_DELAY_START_SENSOR, SECONDS_INSERT_DATA_SENSOR, TimeUnit.SECONDS);
     }
 
     public static void startElectricitySensor() {
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
-        Request request = Request.Post("http://localhost:" + SENSORPORT + "/invoke/home1/chaincode1");
+        Request request = Request.Post("http://localhost:" + SENSOR_PORT + "/invoke/home1/chaincode1");
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
         Executors.newSingleThreadScheduledExecutor()
                 .scheduleAtFixedRate(() -> {
                     try {
-                        double washingMachineKw = tlr.nextDouble(0, 4.00001);
-                        double fridgeKw = tlr.nextDouble(0, 4.00001);
-                        double dishwasherKw = tlr.nextDouble(0, 4.00001);
+                        double washingMachineKw = tlr.nextDouble(MIN_ABSORPTION_KW, MAX_ABSORPTION_KW);
+                        double fridgeKw = tlr.nextDouble(MIN_ABSORPTION_KW, MAX_ABSORPTION_KW);
+                        double dishwasherKw = tlr.nextDouble(MIN_ABSORPTION_KW, MAX_ABSORPTION_KW);
                         double useElectricity = washingMachineKw + fridgeKw + dishwasherKw;
 
-                        request.setHeader("Authorization", "Bearer " + ServerImpl.getToken(SENSORPORT));
+                        request.setHeader("Authorization", "Bearer " + TokenManager.getToken(SENSOR_PORT));
                         String body = "{ \"method\": \"HouseSensorContract:insertHouseElectricity\", \"args\": [\"" + useElectricity + "\", \"" + washingMachineKw + "\", \"" + fridgeKw + "\", \"" + dishwasherKw + "\"] }";
                         request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
                         executeRequestInsertDataSensor(request);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }, SECINITDELAYSENSOR, SECINSERTDATASENSOR, TimeUnit.SECONDS);
+                }, SECONDS_DELAY_START_SENSOR, SECONDS_INSERT_DATA_SENSOR, TimeUnit.SECONDS);
     }
 
-    private static void executeRequestInsertDataSensor(@NotNull Request request) throws IOException {
+    private static void executeRequestInsertDataSensor(@NotNull final Request request) throws IOException {
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();
         HttpEntity entity = response.returnResponse().getEntity();
         if (entity != null) {
             System.out.println(EntityUtils.toString(entity).replaceAll("\\\\", ""));
-            System.out.println(ANSI_BLUE + "EXECUTION TIME: " + ((double) (endTime - startTime) / OBL) + " sec" + ANSI_RESET);
+            System.out.println(ANSI_BLUE + "EXECUTION TIME: " + ((double) (endTime - startTime) / ONE_BILION) + " sec" + ANSI_RESET);
         }
     }
 
-    public static @NotNull MyResponse readAllHouseData(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse readAllHouseData(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 }

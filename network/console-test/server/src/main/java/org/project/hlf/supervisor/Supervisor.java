@@ -9,23 +9,23 @@ import java.io.IOException;
 import static org.project.hlf.Utils.executeRequest;
 
 public class Supervisor {
-    public static @NotNull MyResponse payRent(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse payRent(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 
-    public static @NotNull MyResponse payDeposit(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse payDeposit(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 
-    public static @NotNull MyResponse payBill(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse payBill(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 
-    public static @NotNull MyResponse payCondominiumFees(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse payCondominiumFees(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 
-    public static @NotNull MyResponse readAllPaymentType(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse readAllPaymentType(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 }

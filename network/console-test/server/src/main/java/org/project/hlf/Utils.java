@@ -9,7 +9,7 @@ import org.apache.http.util.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import org.project.models.MyRequest;
 import org.project.models.MyResponse;
-import org.project.server.ServerImpl;
+import org.project.server.TokenManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,33 +17,33 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Stream;
 
-import static org.project.server.ServerImpl.OBL;
+import static org.project.ServerConstants.ONE_BILION;
 
 public class Utils {
-    public static @NotNull MyResponse executeRequest(@NotNull MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse executeRequest(@NotNull final MyRequest myRequest) throws IOException {
         Request request = Request.Post(myRequest.request());
         request.bodyString(myRequest.body(), ContentType.APPLICATION_FORM_URLENCODED);
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-        request.setHeader("Authorization", "Bearer " + ServerImpl.getToken(myRequest.port()));
+        request.setHeader("Authorization", "Bearer " + TokenManager.getToken(myRequest.port()));
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();
-        return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / OBL));
+        return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / ONE_BILION));
     }
 
-    public static void execRequestInvokeBenchmark(@NotNull Request request, String key, ScheduledExecutorService executor, List<Double> times) throws IOException {
+    public static void execRequestInvokeBenchmark(@NotNull final Request request, final String key, final ScheduledExecutorService executor, final List<Double> times) throws IOException {
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();
         HttpEntity entity = response.returnResponse().getEntity();
         if (entity != null) {
-            double time = (double) (endTime - startTime) / OBL;
+            double time = (double) (endTime - startTime) / ONE_BILION;
             System.out.println("INVOKE: " + key + " -> " + Thread.currentThread().getName() + " -> " + executor + " -> " + EntityUtils.toString(entity) + " -> " + time);
             times.add(time);
         }
     }
 
-    public static void writeCSV(CSVWriter writer, @NotNull Map<String, List<Double>> hashMap) throws IOException {
+    public static void writeCSV(final CSVWriter writer, @NotNull final Map<String, List<Double>> hashMap) throws IOException {
         int list0Length = hashMap.get("0").size();
         int list1Length = hashMap.get("1").size();
         int list2Length = hashMap.get("2").size();

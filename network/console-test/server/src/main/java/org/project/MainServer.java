@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 class MainServer {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
             LocateRegistry.createRegistry(Server.PORT);
             Naming.rebind("rmi://localhost:" + Server.PORT + "/" + Server.NAME, new ServerImpl());
