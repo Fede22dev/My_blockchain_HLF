@@ -31,7 +31,7 @@ public class Utils {
         return new MyResponse(EntityUtils.toString(response.returnResponse().getEntity()), ((double) (endTime - startTime) / ONE_BILION));
     }
 
-    public static void execRequestInvokeBenchmark(@NotNull final Request request, final String key, final ScheduledExecutorService executor, final List<Double> times) throws IOException {
+    public static void executeRequestInvokeBenchmark(@NotNull final Request request, final String key, final ScheduledExecutorService executor, final List<Double> times) throws IOException {
         long startTime = System.nanoTime();
         Response response = request.execute();
         long endTime = System.nanoTime();

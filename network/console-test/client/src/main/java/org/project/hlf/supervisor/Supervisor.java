@@ -25,7 +25,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerInstance.getInstance().payRent(new MyRequest(request, body, port));
 
-        System.out.println(myResponse.response());
+        System.out.println(myResponse.response().replaceAll("\\\\", ""));
         System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
@@ -45,7 +45,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerInstance.getInstance().payDeposit(new MyRequest(request, body, port));
 
-        System.out.println(myResponse.response());
+        System.out.println(myResponse.response().replaceAll("\\\\", ""));
         System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
@@ -63,9 +63,9 @@ public class Supervisor {
         String bill = CONSOLE.readLine().strip();
         String body = "{ \"method\": \"HouseSupervisorContract:payBills\", \"args\": [ \"" + payFrom + "\", \"" + payTo + "\", \"" + bill + "\" ] }";
 
-        MyResponse myResponse = ServerInstance.getInstance().payBill(new MyRequest(request, body, port));
+        MyResponse myResponse = ServerInstance.getInstance().payBills(new MyRequest(request, body, port));
 
-        System.out.println(myResponse.response());
+        System.out.println(myResponse.response().replaceAll("\\\\", ""));
         System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
@@ -85,7 +85,7 @@ public class Supervisor {
 
         MyResponse myResponse = ServerInstance.getInstance().payCondominiumFees(new MyRequest(request, body, port));
 
-        System.out.println(myResponse.response());
+        System.out.println(myResponse.response().replaceAll("\\\\", ""));
         System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
     }
 
@@ -114,7 +114,7 @@ public class Supervisor {
 
                 MyResponse myResponse = ServerInstance.getInstance().readAllPaymentType(new MyRequest(request, body, port));
 
-                System.out.println(myResponse.response());
+                System.out.println(myResponse.response().replaceAll("\\\\", ""));
                 System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
             } catch (NumberFormatException e) {
                 System.err.println("Only number");

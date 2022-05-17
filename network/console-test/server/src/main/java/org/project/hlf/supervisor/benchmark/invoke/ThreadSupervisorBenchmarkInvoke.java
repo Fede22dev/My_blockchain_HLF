@@ -56,7 +56,7 @@ class ThreadSupervisorBenchmarkInvoke extends Thread {
     private void startNewExecutor() {
         future = executor.scheduleAtFixedRate(() -> {
             try {
-                Utils.execRequestInvokeBenchmark(request, key, executor, times);
+                Utils.executeRequestInvokeBenchmark(request, key, executor, times);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

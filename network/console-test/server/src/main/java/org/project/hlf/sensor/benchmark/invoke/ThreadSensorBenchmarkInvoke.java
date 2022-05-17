@@ -50,7 +50,7 @@ class ThreadSensorBenchmarkInvoke extends Thread {
                 ThreadLocalRandom tlr = ThreadLocalRandom.current();
                 String body = "{ \"method\": \"HouseSensorContract:insertHouseWeather\", \"args\": [\"" + tlr.nextDouble(MIN_TEMPERATURE, MAX_TEMPERATURE) + "\", \"" + tlr.nextDouble(MIN_HUMIDITY, MAX_HUMIDITY) + "\" ] }";
                 request.bodyString(body, ContentType.APPLICATION_FORM_URLENCODED);
-                Utils.execRequestInvokeBenchmark(request, key, executor, times);
+                Utils.executeRequestInvokeBenchmark(request, key, executor, times);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

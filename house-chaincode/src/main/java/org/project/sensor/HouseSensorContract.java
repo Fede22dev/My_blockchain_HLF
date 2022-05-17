@@ -27,9 +27,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
                         url = "https://housesensor.org")))
 @Default
 public class HouseSensorContract implements ContractInterface {
-    public HouseSensorContract() {
-    }
-
     /**
      * Metodo utilizzato per inserire i dati rilevati ipoteticamente da un sensore
      * interno (rileva dati metereologici) collegato al network. Viene inizialmente
@@ -42,18 +39,17 @@ public class HouseSensorContract implements ContractInterface {
      * @return stringa a console positiva in caso di succeso, negativa in caso di problemi
      */
     @Transaction
-    public String insertHouseWeather(@NotNull Context ctx, double temperature, double humidity) {
+    public String insertHouseWeather(@NotNull final Context ctx, final double temperature, final double humidity) {
         if (ctx.getClientIdentity().getMSPID().contains("Sensors")) {
             long time = System.currentTimeMillis();
-            String key = "WEATHER" + time;
 
             HouseSensorWeather asset = new HouseSensorWeather();
             asset.setTemperature(temperature);
             asset.setHumidity(humidity);
             asset.setTimeStamp(new Timestamp(time).toString());
 
+            String key = "WEATHER" + time;
             ctx.getStub().putState(key, asset.toJSONString().getBytes(UTF_8));
-
             return "Insert data ok: " + key + " " + asset.toJSONString();
         } else {
             return "Access denied to this method by this type of account";
@@ -74,10 +70,9 @@ public class HouseSensorContract implements ContractInterface {
      * @return stringa a console positiva in caso di succeso, negativa in caso di problemi
      */
     @Transaction
-    public String insertHouseElectricity(@NotNull Context ctx, double useElectricity, double washingMachineKw, double fridgeKw, double dishwasherKw) {
+    public String insertHouseElectricity(@NotNull final Context ctx, final double useElectricity, final double washingMachineKw, final double fridgeKw, final double dishwasherKw) {
         if (ctx.getClientIdentity().getMSPID().contains("Sensors")) {
             long time = System.currentTimeMillis();
-            String key = "ELECTRICITY" + time;
 
             HouseSensorElectricity asset = new HouseSensorElectricity();
             asset.setUseElectricity(useElectricity);
@@ -86,8 +81,8 @@ public class HouseSensorContract implements ContractInterface {
             asset.setDishwasherKw(dishwasherKw);
             asset.setTimeStamp(new Timestamp(time).toString());
 
+            String key = "ELECTRICITY" + time;
             ctx.getStub().putState(key, asset.toJSONString().getBytes(UTF_8));
-
             return "Insert data ok: " + key + " " + asset.toJSONString();
         } else {
             return "Access denied to this method by this type of account";
@@ -104,7 +99,7 @@ public class HouseSensorContract implements ContractInterface {
      * @return dati richiesti in caso di riuscita, stringa negativa in caso di problemi
      */
     @Transaction
-    public String readAllHouseWeather(@NotNull Context ctx, long startMillis, long endMillis) {
+    public String readAllHouseWeather(@NotNull final Context ctx, final long startMillis, final long endMillis) {
         if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             QueryResultsIterator<KeyValue> results = ctx.getStub().getStateByRange("WEATHER" + startMillis, "WEATHER" + endMillis);
             List<String> queryResults = new ArrayList<>();
@@ -128,7 +123,7 @@ public class HouseSensorContract implements ContractInterface {
      * @return dati richiesti in caso di riuscita, stringa negativa in caso di problemi
      */
     @Transaction
-    public String readAllHouseElectricity(@NotNull Context ctx, long startMillis, long endMillis) {
+    public String readAllHouseElectricity(@NotNull final Context ctx, final long startMillis, final long endMillis) {
         if (ctx.getClientIdentity().getMSPID().contains("Tenant")) {
             QueryResultsIterator<KeyValue> results = ctx.getStub().getStateByRange("ELECTRICITY" + startMillis, "ELECTRICITY" + endMillis);
             List<String> queryResults = new ArrayList<>();

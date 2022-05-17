@@ -3,7 +3,7 @@ package org.project;
 public class ServerConstants {
     //Color string console
     public final static String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\033[0;35m";
+    public final static String ANSI_PURPLE = "\033[0;35m";
     public final static String ANSI_RESET = "\u001B[0m";
 
     //Number

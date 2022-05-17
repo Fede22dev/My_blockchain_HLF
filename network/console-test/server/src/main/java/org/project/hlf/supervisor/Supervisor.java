@@ -17,7 +17,7 @@ public class Supervisor {
         return executeRequest(myRequest);
     }
 
-    public static @NotNull MyResponse payBill(@NotNull final MyRequest myRequest) throws IOException {
+    public static @NotNull MyResponse payBills(@NotNull final MyRequest myRequest) throws IOException {
         return executeRequest(myRequest);
     }
 

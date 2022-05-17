@@ -48,7 +48,7 @@ public class Sensor {
 
                 MyResponse myResponse = ServerInstance.getInstance().readAllHouseData(new MyRequest(request, body, TENANT_PORT));
 
-                System.out.println(myResponse.response());
+                System.out.println(myResponse.response().replaceAll("\\\\", ""));
                 System.out.println(ANSI_BLUE + "TOTAL EXECUTION TIME: " + myResponse.executionTime() + ANSI_RESET);
             } catch (ParseException e) {
                 System.err.println("Date not valid");

@@ -93,9 +93,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public synchronized MyResponse payBill(final MyRequest myRequest) throws RemoteException {
+    public synchronized MyResponse payBills(final MyRequest myRequest) throws RemoteException {
         try {
-            return Supervisor.payBill(myRequest);
+            return Supervisor.payBills(myRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

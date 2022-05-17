@@ -11,7 +11,7 @@ public interface ServerSupervisor extends Remote {
 
     MyResponse payDeposit(MyRequest myRequest) throws RemoteException;
 
-    MyResponse payBill(MyRequest myRequest) throws RemoteException;
+    MyResponse payBills(MyRequest myRequest) throws RemoteException;
 
     MyResponse payCondominiumFees(MyRequest myRequest) throws RemoteException;
 
