@@ -8,7 +8,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class ServerInstance {
-
     private static Server server = null;
 
     private static void init() {

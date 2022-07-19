@@ -4,14 +4,8 @@ import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.json.JSONObject;
 
-/**
- * In questa classe sono presente le informazioni necessarie alla creazione
- * della transazione e del blocco stesso all'interno del network. I parametri
- * vengono poi utilizzati in HouseSupervisorContract
- */
 @DataType()
 public class HouseSupervisor {
-
     @Property()
     private String paymentFrom;
 

@@ -2,7 +2,8 @@ package org.project.supervisor;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.annotation.Contract;
+import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
@@ -15,35 +16,13 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Contract(name = "HouseSupervisorContract",
-        info = @Info(title = "House Supervisor Contract",
-                description = "House Supervisor implementation",
-                version = "0.0.1",
-                license =
-                @License(name = "Apache2.0"),
-                contact = @Contact(email = "HouseSupervisor@example.com",
-                        name = "House Supervisor",
-                        url = "https://housesupervisor.org")))
-@Default
+@Contract(name = "HouseSupervisorContract")
 public class HouseSupervisorContract implements ContractInterface {
     private final static int VALUE_RENT = 450;
     private final static int VALUE_DEPOSIT = 100;
     private final static int VALUE_BILLS = 50;
     private final static int VALUE_CONDOMINIUM_FEES = 600;
 
-    /**
-     * Metodo utilizzato per effettuare i pagamenti degli affitti. Il prezzo
-     * e' stato inserito pensando ad un precedente accordo fra landlord e tenant. Viene effettuato
-     * un doppio controllo, prima per verificare se e' effettivamente un tenant o un guest, una seconda per
-     * verificare se e' la prima volta che paga l'affitto quel mese, questo
-     * onde evitare doppi pagamenti.
-     *
-     * @param ctx         context
-     * @param paymentFrom nome del tenant
-     * @param paymentTo   nome del landlord
-     * @param rent        affito stabilito precendemente
-     * @return stringa a console positiva in caso di succeso, negativa in caso di problemi
-     */
     @Transaction()
     public String payRent(@NotNull final Context ctx, final String paymentFrom, final String paymentTo, final double rent) {
         if (!ctx.getClientIdentity().getMSPID().contains("Tenant")) {
@@ -71,19 +50,6 @@ public class HouseSupervisorContract implements ContractInterface {
         return "Payment ok: " + key + " " + asset.toJSONString();
     }
 
-    /**
-     * Metodo utilizzato per effettuare i pagamenti delle caparra. Il prezzo
-     * e' stato inserito pensando ad un precedente accordo fra landlord e tenant/guest. Viene effettuato
-     * un doppio controllo, prima per verificare se e' effettivamente un tenant o un guest, una seconda per
-     * verificare se e' la prima volta che paga la caparra, questo
-     * onde evitare doppi pagamenti.
-     *
-     * @param ctx         context
-     * @param paymentFrom nome del tenant/guest
-     * @param paymentTo   nome del landlord
-     * @param deposit     caparra stabilita precendemente
-     * @return stringa a console positiva in caso di succeso, negativa in caso di problemi
-     */
     @Transaction()
     public String payDeposit(@NotNull final Context ctx, final String paymentFrom, final String paymentTo, final double deposit) {
         if (!(ctx.getClientIdentity().getMSPID().contains("Tenant") || ctx.getClientIdentity().getMSPID().contains("Guest"))) {
@@ -111,19 +77,6 @@ public class HouseSupervisorContract implements ContractInterface {
         return "Payment ok: " + key + " " + asset.toJSONString();
     }
 
-    /**
-     * Metodo utilizzato per effettuare i pagamenti delle bollette. Il prezzo
-     * e' stato inserito pensando ad ipotetica cifra di una bolletta. Viene effettuato
-     * un doppio controllo, prima per verificare se e' effettivamente un tenant, una seconda per
-     * verificare se e' la prima volta che paga la bolletta (ipoteticamente una volta al mese), questo
-     * onde evitare doppi pagamenti.
-     *
-     * @param ctx         context
-     * @param paymentFrom nome del tenant
-     * @param paymentTo   nome del landord
-     * @param bills       bolletta stabilita ipoteticamente
-     * @return stringa a console positiva in caso di succeso, negativa in caso di problemi
-     */
     @Transaction()
     public String payBills(@NotNull final Context ctx, final String paymentFrom, final String paymentTo, final double bills) {
         if (!ctx.getClientIdentity().getMSPID().contains("Tenant")) {
@@ -151,19 +104,6 @@ public class HouseSupervisorContract implements ContractInterface {
         return "Payment ok: " + key + " " + asset.toJSONString();
     }
 
-    /**
-     * Metodo utilizzato per effettuare i pagamenti delle spese condominiali. Il prezzo
-     * è stato inserito pensando ad un precedente accordo fra landlord e tenant. Viene effettuato
-     * un doppio controllo, prima per verificare se e' effettivamente un tenant, una seconda per
-     * verificare se è la prima volta che paga la tassa (ipoteticamente una volta all'anno), questo
-     * onde evitare doppi pagamenti.
-     *
-     * @param ctx             context
-     * @param paymentFrom     tenant
-     * @param paymentTo       landlord
-     * @param condominiumFees quota precedentemente stabilita
-     * @return stringa a console positiva in caso di successo, negativa in caso di problemi
-     */
     @Transaction()
     public String payCondominiumFees(@NotNull final Context ctx, final String paymentFrom, final String paymentTo, final double condominiumFees) {
         if (!ctx.getClientIdentity().getMSPID().contains("Tenant")) {
@@ -191,18 +131,6 @@ public class HouseSupervisorContract implements ContractInterface {
         return "Payment ok: " + key + " " + asset.toJSONString();
     }
 
-    /**
-     * Metodo utilizzato per poter leggere all'interno del ledger i vari pagamenti presenti,
-     * potendo filtrare in base ai tipi presenti (bolletta, affitto, caparra).
-     *
-     * @param ctx        context
-     * @param type       tipo di pagamento (bolletta, affitto, caparra)
-     * @param startMonth mese di inzio (come lasso di tempo)
-     * @param startYear  anno di inizio (come lasso di tempo)
-     * @param endMonth   mese di fine escluso (come lasso di tempo)
-     * @param endYear    anno di fine escluso (come lasso di tempo)
-     * @return json convertito a stringa con i pagamenti richiesti, stringa di errore in caso di errori.
-     */
     @Transaction()
     public String readAllPaymentType(@NotNull final Context ctx, @NotNull final String type, final String startMonth, final String startYear, final String endMonth, final String endYear) {
         QueryResultsIterator<KeyValue> results;
