@@ -1,7 +1,7 @@
 @startjson
 {
   "global": {
-    "fabricVersion": "2.4.1",
+    "fabricVersion": "2.4.3",
     "tls": true
   },
   "orgs": [
@@ -10,18 +10,16 @@
         "name": "Orderer",
         "domain": "orderer.project.it"
       },
-      "orderers": [
-        {
+      "orderers": {
           "groupName": "group1",
           "type": "raft",
           "instances": 3
-        }
-      ]
+      }
     },
     {
       "organization": {
         "name": "Landlord_num",
-        "domain": "landlord.project.it"
+        "domain": "landlord_num.project.it"
       },
       "peer": {
         "instances": 1,
@@ -32,7 +30,7 @@
     {
       "organization": {
         "name": "Tenant_num",
-        "domain": "tenant.project.it"
+        "domain": "tenant_num.project.it"
       },
       "peer": {
         "instances": 1,
@@ -43,7 +41,7 @@
     {
       "organization": {
         "name": "Guest_num",
-        "domain": "guest.project.it"
+        "domain": "guest_num.project.it"
       },
       "peer": {
         "instances": 1,
@@ -54,7 +52,7 @@
     {
       "organization": {
         "name": "Sensors_num",
-        "domain": "sensors.project.it"
+        "domain": "sensors_num.project.it"
       },
       "peer": {
         "instances": 1,
@@ -63,43 +61,33 @@
       }
     }
   ],
-  "channels": [
+  "channels":
     {
       "name": "home_num",
       "orgs": [
         {
           "name": "Landlord_num",
-          "peers": [
-            "peer0"
-          ]
+          "peers": "peer_num"
         },
         {
           "name": "Tenant_num",
-          "peers": [
-            "peer0"
-          ]
+          "peers": "peer_num"
         },
         {
           "name": "Guest_num",
-          "peers": [
-            "peer0"
-          ]
+          "peers": "peer_num"
         },
         {
           "name": "Sensors_num",
-          "peers": [
-            "peer0"
-          ]
+          "peers": "peer_num"
         }
       ]
-    }
-  ],
-  "chaincodes": [
+    },
+  "chaincodes":
     {
       "name": "chaincode_name",
       "channel": "home_num",
       "endorsement": "OR(all MSP orgs)"
     }
-  ]
 }
 @endjson

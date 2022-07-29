@@ -36,5 +36,5 @@ public class ServerConstants {
     public final static int NUMBER_OF_PROCESS = 3; //This cannot be changed
     public final static int SIZE_THREAD_POOL = 5;
     public final static long SECONDS_DURATION_BENCHMARK = 60 * 2;
-    public final static long MILLIS_RATE_REQUEST_BENCHMARK = 250; // 500 = 2 transaction per second
+    public final static long MILLIS_RATE_REQUEST_BENCHMARK = 250; // 500 = 2 transaction per second -> 250 = 4 -> ...
 }
