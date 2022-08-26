@@ -110,7 +110,7 @@ public class HouseSupervisorContract implements ContractInterface {
             return "Access denied to this method by this type of account, only tenant can pay this";
         }
 
-        String key = "CONDUMINIUMFEES" + Calendar.getInstance().get(Calendar.YEAR);
+        String key = "CONDOMINIUMFEES" + Calendar.getInstance().get(Calendar.YEAR);
         ChaincodeStub stub = ctx.getStub();
         byte[] buffer = stub.getState(key);
         if (buffer != null && buffer.length > 0) {
@@ -136,16 +136,32 @@ public class HouseSupervisorContract implements ContractInterface {
         QueryResultsIterator<KeyValue> results;
         switch (type) {
             case "rents":
+                if (!(ctx.getClientIdentity().getMSPID().contains("Landlord") || ctx.getClientIdentity().getMSPID().contains("Tenant"))) {
+                    return "Access denied to this method by this type of account, only landlord or tenant can read this";
+                }
+
                 results = ctx.getStub().getStateByRange("RENT" + startMonth + "-" + startYear, "RENT" + endMonth + "-" + endYear);
                 break;
             case "bills":
+                if (!ctx.getClientIdentity().getMSPID().contains("Tenant")) {
+                    return "Access denied to this method by this type of account, only tenant can read this";
+                }
+
                 results = ctx.getStub().getStateByRange("BILL" + startMonth + "-" + startYear, "BILL" + endMonth + "-" + endYear);
                 break;
             case "deposits":
+                if (ctx.getClientIdentity().getMSPID().contains("Sensors")) {
+                    return "Access denied to this method by this type of account, only landlord, tenant or guest can read this";
+                }
+
                 results = ctx.getStub().getStateByRange("DEPOSIT" + startMonth + "-" + startYear, "DEPOSIT" + endMonth + "-" + endYear);
                 break;
             case "condominium_fees":
-                results = ctx.getStub().getStateByRange("CONDUMINIUMFEES" + startYear, "CONDUMINIUMFEES" + endYear);
+                if (!ctx.getClientIdentity().getMSPID().contains("Tenant")) {
+                    return "Access denied to this method by this type of account, only tenant can read this";
+                }
+
+                results = ctx.getStub().getStateByRange("CONDOMINIUMFEES" + startYear, "CONDOMINIUMFEES" + endYear);
                 break;
             default:
                 return "The type entered does not exist";
