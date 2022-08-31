@@ -23,7 +23,7 @@ public class EnrollBenchmark {
             THREAD_ENROLL_BENCHMARKS[i].join();
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_enroll_" + "tps" + ONE_THOUSAND / MILLIS_RATE_REQUEST_BENCHMARK + "_dur" + SECONDS_DURATION_BENCHMARK + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter(ENROLL_CSV));
         writer.writeNext(new String[]{"enroll time 1", "enroll time 2", "enroll time 3"});
 
         Map<String, List<Double>> hashMap = EnrollDataBenchmark.getMultiListTimes();

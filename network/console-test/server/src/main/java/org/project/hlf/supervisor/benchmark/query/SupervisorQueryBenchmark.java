@@ -23,7 +23,7 @@ public class SupervisorQueryBenchmark {
             THREAD_SUPERVISOR_BENCHMARK_QUERIES[i].join();
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_query_" + "tps" + ONE_THOUSAND / MILLIS_RATE_REQUEST_BENCHMARK + "_dur" + SECONDS_DURATION_BENCHMARK + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter(SUPERVISOR_QUERY_CSV));
         writer.writeNext(new String[]{"query time 1", "query time 2", "query time 3"});
 
         Map<String, List<Double>> hashMap = SupervisorQueryDataBenchmark.getMultiListTimes();

@@ -27,7 +27,7 @@ class ThreadSensorBenchmarkQuery extends Thread {
 
     ThreadSensorBenchmarkQuery(final String key) {
         this.key = key;
-        request = Request.Post("http://localhost:" + SENSOR_PORT + "/query/home1/chaincode1");
+        request = Request.Post("http://localhost:" + TENANT_PORT + "/query/home1/chaincode1");
         executor = Executors.newScheduledThreadPool(SIZE_THREAD_POOL);
         times = new ArrayList<>();
         start();
@@ -43,7 +43,7 @@ class ThreadSensorBenchmarkQuery extends Thread {
     }
 
     private void test() throws InterruptedException {
-        request.setHeader("Authorization", "Bearer " + TokenManager.getToken(SENSOR_PORT));
+        request.setHeader("Authorization", "Bearer " + TokenManager.getToken(TENANT_PORT));
         request.setHeader("Content-Type", "application/x-www-form-urlencoded");
         LocalDateTime todayMidnight = LocalDateTime.of(LocalDate.now(ZoneId.of("Europe/Rome")), LocalTime.MIDNIGHT);
         LocalDateTime tomorrowMidnight = todayMidnight.plusDays(1);

@@ -3,6 +3,7 @@ package org.project.hlf.sensor.benchmark.invoke;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.project.hlf.Utils;
+import org.project.server.TokenManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ class ThreadSensorBenchmarkInvoke extends Thread {
     }
 
     private void test() throws InterruptedException {
+        request.setHeader("Authorization", "Bearer " + TokenManager.getToken(SENSOR_PORT));
+        request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
         startNewExecutor();
         Thread.sleep(ONE_THOUSAND * SECONDS_DURATION_BENCHMARK);
         future.cancel(false);

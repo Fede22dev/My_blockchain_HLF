@@ -23,7 +23,7 @@ public class SupervisorInvokeBenchmark {
             THREAD_SUPERVISOR_BENCHMARK_INVOKES[i].join();
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/media/sf_Passaggio_File/bench_supervisor_invoke_" + "tps" + ONE_THOUSAND / MILLIS_RATE_REQUEST_BENCHMARK + "_dur" + SECONDS_DURATION_BENCHMARK + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter(SUPERVISOR_INVOKE_CSV));
         writer.writeNext(new String[]{"invoke time 1", "invoke time 2", "invoke time 3"});
 
         Map<String, List<Double>> hashMap = SupervisorInvokeDataBenchmark.getMultiListTimes();
